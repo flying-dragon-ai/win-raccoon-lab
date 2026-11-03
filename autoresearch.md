@@ -63,3 +63,29 @@ The host is the benchmark. C: has ~13 GB free. The map currently accounts for
 ## What's Been Tried
 
 - Baseline: 85 entries, 32 present, `safe_gb` = 18.181, scan 8.2 s.
+- **Coverage is saturated at ~30.8 GiB on this host.** Every remaining large tree
+  is user state (LarkShell users 5.3 G, npm global 4.3 G, Downloads 12.5 G),
+  rebuild-cost index (.qoder 3.6 G, JetBrains 1.3 G) or installed binaries.
+  Do not chase `safe_gb` further; there is no headroom.
+- Directory-level discovery misses large single files. A big-file sweep
+  (`-BigFiles`) found 1.4 GB of stale `installer.exe` that 146 directory
+  entries had missed. `*-updater/installer.exe` generalises to one glob.
+- `D:/temp` is a trap: 14.5 GB of live projects behind a name that invites
+  deletion. Documented as `forbidden` with `measure: false`.
+- The old map was not just incomplete, it was **wrong**: pnpm's store is
+  `pnpm/package-manager-store`, not `pnpm/store`; DingTalk logs are
+  `holmeslogs`/`recordLog`/`updaterlogs`, not `log`; Chrome's file is
+  `Login Data For Account`. Verify paths against the host, don't trust the doc.
+- Parallel measurement: throttle sweep 1=38.4 s, 8=21.0 s, **16=8.0 s**,
+  24=10.2 s, 32=12.9 s. 16 is the knee; beyond it disk metadata contention wins.
+- `scan_seconds` is dominated by ambient machine load (observed 8 s to 38 s for
+  identical code). Never judge speed work on a single run.
+- The checks gate was syscall-bound: `GetFileSystemEntries` + `GetAttributes`
+  does two syscalls per file. `DirectoryInfo.EnumerateFiles()` returns
+  `FileInfo` with `Length` and attributes already populated — 117 s → 5 s.
+- Probe false positives worth remembering: `.ldb`/`.db` correctly flags a
+  LevelDB store as user state; `.msg` is ambiguous (Python gettext catalogs)
+  and was dropped from `user_content_ext`; `.zip`/`.rar` are ambiguous too.
+- Media needs its own threshold. Browser caches are legitimately 40-60% images,
+  so images/video/audio sit in `media_ext` at 85%, not in `user_content_ext`
+  at 30%.
