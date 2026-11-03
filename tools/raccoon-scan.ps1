@@ -324,6 +324,23 @@ function Invoke-Render {
     }
     [void]$sb.AppendLine('')
   }
+  [void]$sb.AppendLine('## 6. 系统官方入口（优先推荐用户自己跑）')
+  [void]$sb.AppendLine('')
+  [void]$sb.AppendLine('| 入口 | 说明 |')
+  [void]$sb.AppendLine('|---|---|')
+  [void]$sb.AppendLine('| 设置 → 系统 → 存储 → 临时文件 / 存储感知 | 官方一站式；⚠️ 别勾"下载" |')
+  [void]$sb.AppendLine('| `cleanmgr`（磁盘清理） | 含"以前的 Windows 安装""传递优化文件" |')
+  [void]$sb.AppendLine('| `Dism.exe /Online /Cleanup-Image /StartComponentCleanup` | 管理员；安全压缩组件存储 |')
+  [void]$sb.AppendLine('| `Delete-DeliveryOptimizationCache -Force` | 管理员 PowerShell |')
+  [void]$sb.AppendLine('| `Clear-RecycleBin -Force` | 清空回收站=真删，仅当用户明确要求 |')
+  [void]$sb.AppendLine('')
+  [void]$sb.AppendLine('## 7. 地图外路径的处理流程')
+  [void]$sb.AppendLine('')
+  [void]$sb.AppendLine('1. `raccoon-scan.ps1 -Probe <path>` 拿初判与理由。')
+  [void]$sb.AppendLine('2. 查官方文档/源码，确认是"可再生缓存"。')
+  [void]$sb.AppendLine('3. 不在禁止清单里 → 可以提议给用户；否则标"未知，不建议动"。')
+  [void]$sb.AppendLine('4. 确认后写进 `tools/cache-map.jsonl`，跑 `raccoon-validate.ps1` 过闸门。')
+  [void]$sb.AppendLine('')
   [System.IO.File]::WriteAllText($OutPath, $sb.ToString(), (New-Object System.Text.UTF8Encoding($false)))
   Write-Host "rendered $OutPath"
 }

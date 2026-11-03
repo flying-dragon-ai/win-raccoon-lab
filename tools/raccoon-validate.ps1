@@ -255,12 +255,16 @@ if ($null -ne $scan) {
 
 # ---------------------------------------------------------------- 6. scanner must stay read-only
 $src = Get-Content -Raw -LiteralPath $scanPath
+# Scan code, not prose: strip single-quoted literals and line comments first, so a
+# documentation line that merely names a destructive cmdlet does not trip the guard.
+$code = [regex]::Replace($src, "'(?:[^']|'')*'", "''")
+$code = [regex]::Replace($code, '(?m)#.*$', '')
 $destructive = @('Remove-Item','Move-Item','Clear-RecycleBin','Format-Volume','Rename-Item',
                  '\[System\.IO\.File\]::Delete','\[System\.IO\.Directory\]::Delete',
                  '\[System\.IO\.File\]::Move','\[System\.IO\.Directory\]::Move')
 $roFail = 0
 foreach ($d in $destructive) {
-  if ($src -match $d) { Fail "scanner contains destructive token: $d"; $roFail++ }
+  if ($code -match $d) { Fail "scanner contains destructive token: $d"; $roFail++ }
 }
 if ($roFail -eq 0) { Ok 'scanner is read-only (no destructive cmdlets)' }
 
