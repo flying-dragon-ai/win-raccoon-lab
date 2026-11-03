@@ -26,7 +26,8 @@ param(
   [switch]$Render,
   [switch]$Json,
   [switch]$NoMeasure,
-  [int]$Top = 0
+  [int]$Top = 0,
+  [int]$Throttle = 16
 )
 
 $ErrorActionPreference = 'Stop'
@@ -52,6 +53,54 @@ function Measure-Tree {
   }
   if ($rows.Count -ge 3) { return $rows[2] }
   return 0
+}
+
+function Measure-Many {
+  param([string[]]$Paths, [int]$Throttle = 8)
+  $res = @{}
+  if ($null -eq $Paths -or $Paths.Count -eq 0) { return $res }
+
+  $dirs = New-Object 'System.Collections.Generic.List[string]'
+  foreach ($p in $Paths) {
+    $it = Get-Item -LiteralPath $p -Force -ErrorAction SilentlyContinue
+    if ($null -eq $it) { $res[$p] = -1; continue }
+    if ($it.PSIsContainer) { $dirs.Add($p) } else { $res[$p] = [int64]$it.Length }
+  }
+  if ($dirs.Count -eq 0) { return $res }
+
+  $worker = {
+    param($p, $nullDir)
+    $rows = New-Object 'System.Collections.Generic.List[int64]'
+    $out = & robocopy $p $nullDir /L /S /BYTES /XJ /NFL /NDL /NJH /NP /R:0 /W:0 2>$null
+    foreach ($l in $out) {
+      if ($l -match ':\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*$') { $rows.Add([int64]$matches[1]) }
+    }
+    if ($rows.Count -ge 3) { return $rows[2] }
+    return [int64]0
+  }
+
+  $n = [Math]::Min($Throttle, $dirs.Count)
+  $pool = [runspacefactory]::CreateRunspacePool(1, $n)
+  $pool.Open()
+  $jobs = New-Object 'System.Collections.Generic.List[object]'
+  foreach ($p in $dirs) {
+    $ps = [powershell]::Create()
+    $ps.RunspacePool = $pool
+    [void]$ps.AddScript($worker).AddArgument($p).AddArgument($script:NullDir)
+    $jobs.Add([pscustomobject]@{ Path = $p; PS = $ps; Handle = $ps.BeginInvoke() })
+  }
+  foreach ($j in $jobs) {
+    $v = [int64]0
+    try {
+      $r = $j.PS.EndInvoke($j.Handle)
+      if ($null -ne $r -and $r.Count -gt 0) { $v = [int64]$r[0] }
+    } catch { $v = -1 }
+    $res[$j.Path] = $v
+    $j.PS.Dispose()
+  }
+  $pool.Close()
+  $pool.Dispose()
+  return $res
 }
 
 function Resolve-RaccoonPath {
@@ -321,6 +370,9 @@ $sumForbidden = [int64]0
 $present = 0
 $missing = 0
 
+# pass 1: resolve every entry to concrete targets
+$plan = New-Object 'System.Collections.Generic.List[object]'
+$allPaths = New-Object 'System.Collections.Generic.List[string]'
 foreach ($e in $entries) {
   $resolved = Resolve-RaccoonPath ([string]$e.path)
   $targets = @()
@@ -330,7 +382,24 @@ foreach ($e in $entries) {
     $one = Get-Item -LiteralPath $resolved -Force -ErrorAction SilentlyContinue
     if ($null -ne $one) { $targets = @($one) }
   }
-  $exists = ($targets.Count -gt 0)
+  $paths = @()
+  foreach ($t in $targets) {
+    $paths += $t.FullName
+    if (-not $NoMeasure) { $allPaths.Add($t.FullName) }
+  }
+  $plan.Add([pscustomobject]@{ Entry = $e; Resolved = $resolved; Paths = $paths })
+}
+
+# pass 2: measure every target in parallel
+$sizes = @{}
+if (-not $NoMeasure -and $allPaths.Count -gt 0) {
+  $sizes = Measure-Many -Paths $allPaths.ToArray() -Throttle $Throttle
+}
+
+# pass 3: assemble the report
+foreach ($p in $plan) {
+  $e = $p.Entry
+  $exists = ($p.Paths.Count -gt 0)
   $bytes = -1
   if ($exists) {
     $present++
@@ -338,7 +407,7 @@ foreach ($e in $entries) {
       $bytes = 0
     } else {
       $bytes = [int64]0
-      foreach ($t in $targets) { $bytes += (Measure-Tree $t.FullName) }
+      foreach ($tp in $p.Paths) { if ($sizes.ContainsKey($tp)) { $bytes += $sizes[$tp] } }
     }
   } else {
     $missing++
@@ -352,7 +421,7 @@ foreach ($e in $entries) {
     }
   }
   $report.Add([pscustomobject]@{
-    id = [string]$e.id; section = [string]$e.section; path = $resolved
+    id = [string]$e.id; section = [string]$e.section; path = $p.Resolved
     level = $level; exists = $exists; bytes = $bytes
     app = [string]$e.app; kind = [string]$e.kind
   })

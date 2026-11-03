@@ -1,0 +1,1471 @@
+{
+    "safe_gb":  28.65,
+    "caution_gb":  17.125,
+    "forbidden_gb":  41.411,
+    "entries":  146,
+    "present":  93,
+    "missing":  53,
+    "scan_seconds":  38.26,
+    "items":  [
+                  {
+                      "id":  "temp-user",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Temp",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  12178774698,
+                      "app":  "Windows",
+                      "kind":  "temp"
+                  },
+                  {
+                      "id":  "temp-windows",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Windows\\Temp",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Windows",
+                      "kind":  "temp"
+                  },
+                  {
+                      "id":  "wu-download",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Windows\\SoftwareDistribution\\Download",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Windows Update",
+                      "kind":  "update-cache"
+                  },
+                  {
+                      "id":  "delivery-opt",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Windows\\ServiceProfiles\\NetworkService\\AppData\\Local\\Microsoft\\Windows\\DeliveryOptimization",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  1255424,
+                      "app":  "Windows",
+                      "kind":  "update-cache"
+                  },
+                  {
+                      "id":  "windows-old",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Windows.old",
+                      "level":  "caution",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Windows",
+                      "kind":  "backup"
+                  },
+                  {
+                      "id":  "prefetch",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Windows\\Prefetch",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  20971520,
+                      "app":  "Windows",
+                      "kind":  "prefetch"
+                  },
+                  {
+                      "id":  "winsxs",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Windows\\WinSxS",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  6512696769,
+                      "app":  "Windows",
+                      "kind":  "component-store"
+                  },
+                  {
+                      "id":  "livekernelreports",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Windows\\LiveKernelReports",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  4402655232,
+                      "app":  "Windows",
+                      "kind":  "dump"
+                  },
+                  {
+                      "id":  "minidump",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Windows\\Minidump",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Windows",
+                      "kind":  "dump"
+                  },
+                  {
+                      "id":  "crashdumps",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\CrashDumps",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Windows",
+                      "kind":  "dump"
+                  },
+                  {
+                      "id":  "wer-local",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\Windows\\WER",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Windows",
+                      "kind":  "error-report"
+                  },
+                  {
+                      "id":  "wer-programdata",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\ProgramData\\Microsoft\\Windows\\WER",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Windows",
+                      "kind":  "error-report"
+                  },
+                  {
+                      "id":  "thumbcache",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\Windows\\Explorer",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  25373858,
+                      "app":  "Windows",
+                      "kind":  "thumbnail-cache"
+                  },
+                  {
+                      "id":  "d3dscache",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\D3DSCache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  1732608,
+                      "app":  "Direct3D",
+                      "kind":  "shader-cache"
+                  },
+                  {
+                      "id":  "nvidia-dxcache",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\NVIDIA\\DXCache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "NVIDIA",
+                      "kind":  "shader-cache"
+                  },
+                  {
+                      "id":  "nvidia-glcache",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\NVIDIA\\GLCache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "NVIDIA",
+                      "kind":  "shader-cache"
+                  },
+                  {
+                      "id":  "inetcache",
+                      "section":  "1. 系统临时与诊断",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\Windows\\INetCache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  175908,
+                      "app":  "Windows",
+                      "kind":  "net-cache"
+                  },
+                  {
+                      "id":  "chrome-cache",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\Cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Chrome",
+                      "kind":  "browser-cache"
+                  },
+                  {
+                      "id":  "chrome-code-cache",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\Code Cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Chrome",
+                      "kind":  "browser-cache"
+                  },
+                  {
+                      "id":  "chrome-gpucache",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\GPUCache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  5837168,
+                      "app":  "Chrome",
+                      "kind":  "browser-cache"
+                  },
+                  {
+                      "id":  "chrome-sw-cache",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\Service Worker\\CacheStorage",
+                      "level":  "caution",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Chrome",
+                      "kind":  "browser-cache"
+                  },
+                  {
+                      "id":  "edge-cache",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\Edge\\User Data\\*\\Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Edge",
+                      "kind":  "browser-cache"
+                  },
+                  {
+                      "id":  "edge-code-cache",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\Edge\\User Data\\*\\Code Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Edge",
+                      "kind":  "browser-cache"
+                  },
+                  {
+                      "id":  "edge-gpucache",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\Edge\\User Data\\*\\GPUCache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Edge",
+                      "kind":  "browser-cache"
+                  },
+                  {
+                      "id":  "firefox-cache2",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Mozilla\\Firefox\\Profiles\\*\\cache2",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Firefox",
+                      "kind":  "browser-cache"
+                  },
+                  {
+                      "id":  "chrome-login-data",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\Login Data",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Chrome",
+                      "kind":  "credentials"
+                  },
+                  {
+                      "id":  "chrome-cookies",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\Network\\Cookies",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  20480,
+                      "app":  "Chrome",
+                      "kind":  "session"
+                  },
+                  {
+                      "id":  "chrome-history",
+                      "section":  "2. 浏览器",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\History",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  163840,
+                      "app":  "Chrome",
+                      "kind":  "history"
+                  },
+                  {
+                      "id":  "npm-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\npm-cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  1815802932,
+                      "app":  "npm",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "pnpm-store",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\pnpm\\store",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "pnpm",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "yarn-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Yarn\\Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "yarn",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "pip-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\pip\\cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "pip",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "uv-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\uv\\cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  424823477,
+                      "app":  "uv",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "conda-pkgs",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.conda\\pkgs",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "conda",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "nuget-packages",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.nuget\\packages",
+                      "level":  "caution",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "NuGet",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "nuget-local",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\NuGet",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  22936845,
+                      "app":  "NuGet",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "maven-repo",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.m2\\repository",
+                      "level":  "caution",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Maven",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "gradle-caches",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.gradle\\caches",
+                      "level":  "caution",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Gradle",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "gradle-wrapper",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.gradle\\wrapper\\dists",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Gradle",
+                      "kind":  "toolchain"
+                  },
+                  {
+                      "id":  "go-build",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\go-build",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Go",
+                      "kind":  "build-cache"
+                  },
+                  {
+                      "id":  "go-modcache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\go\\pkg\\mod",
+                      "level":  "caution",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Go",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "cargo-registry",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.cargo\\registry",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Cargo",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "cargo-git",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.cargo\\git",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Cargo",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "hf-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.cache\\huggingface",
+                      "level":  "caution",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Hugging Face",
+                      "kind":  "model-cache"
+                  },
+                  {
+                      "id":  "torch-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.cache\\torch",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "PyTorch",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "playwright",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\ms-playwright",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Playwright",
+                      "kind":  "browser-binary"
+                  },
+                  {
+                      "id":  "puppeteer",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.cache\\puppeteer",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Puppeteer",
+                      "kind":  "browser-binary"
+                  },
+                  {
+                      "id":  "scoop-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\scoop\\cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "scoop",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "docker-wsl",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Docker\\wsl",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  0,
+                      "app":  "Docker Desktop",
+                      "kind":  "vm-disk"
+                  },
+                  {
+                      "id":  "wsl-vhdx",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Packages\\*\\LocalState\\ext4.vhdx",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "WSL",
+                      "kind":  "vm-disk"
+                  },
+                  {
+                      "id":  "vscode-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Code\\Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "VS Code",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "vscode-cacheddata",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Code\\CachedData",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "VS Code",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "vscode-codecache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Code\\Code Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "VS Code",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "vscode-gpucache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Code\\GPUCache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "VS Code",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "vscode-logs",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Code\\logs",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "VS Code",
+                      "kind":  "logs"
+                  },
+                  {
+                      "id":  "vscode-extensions",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.vscode\\extensions",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "VS Code",
+                      "kind":  "extensions"
+                  },
+                  {
+                      "id":  "vscode-user",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Code\\User",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "VS Code",
+                      "kind":  "config"
+                  },
+                  {
+                      "id":  "jb-index",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\index",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  715096765,
+                      "app":  "JetBrains",
+                      "kind":  "index"
+                  },
+                  {
+                      "id":  "jb-caches",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\caches",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  764133137,
+                      "app":  "JetBrains",
+                      "kind":  "index"
+                  },
+                  {
+                      "id":  "jb-log",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\log",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  155169381,
+                      "app":  "JetBrains",
+                      "kind":  "logs"
+                  },
+                  {
+                      "id":  "jb-tmp",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\tmp",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  2254994,
+                      "app":  "JetBrains",
+                      "kind":  "temp"
+                  },
+                  {
+                      "id":  "jb-jcef",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\jcef_cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  25070837,
+                      "app":  "JetBrains",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "jb-plugins",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\plugins",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  1600476800,
+                      "app":  "JetBrains",
+                      "kind":  "extensions"
+                  },
+                  {
+                      "id":  "jb-config",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\JetBrains",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  3060279280,
+                      "app":  "JetBrains",
+                      "kind":  "config"
+                  },
+                  {
+                      "id":  "android-sdk",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk",
+                      "level":  "caution",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Android",
+                      "kind":  "sdk"
+                  },
+                  {
+                      "id":  "android-avd",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.android\\avd",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Android",
+                      "kind":  "vm-disk"
+                  },
+                  {
+                      "id":  "wechat4-cache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\Documents\\xwechat_files\\*\\cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "微信 4.x",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "wechat4-msg",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\Documents\\xwechat_files\\*\\msg",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "微信 4.x",
+                      "kind":  "chat-media"
+                  },
+                  {
+                      "id":  "wechat4-db",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\Documents\\xwechat_files\\*\\db_storage",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "微信 4.x",
+                      "kind":  "chat-db"
+                  },
+                  {
+                      "id":  "wechat3-cache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\Documents\\WeChat Files\\*\\FileStorage\\Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "微信 3.x",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "wechat3-file",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\Documents\\WeChat Files\\*\\FileStorage\\File",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "微信 3.x",
+                      "kind":  "chat-media"
+                  },
+                  {
+                      "id":  "telegram-tdata",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Telegram Desktop\\tdata",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Telegram",
+                      "kind":  "chat-db"
+                  },
+                  {
+                      "id":  "dingtalk-log",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\DingTalk\\log",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "钉钉",
+                      "kind":  "logs"
+                  },
+                  {
+                      "id":  "dingtalk-upgrade",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\DingTalk\\DingpanSyncUpgrade",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "钉钉",
+                      "kind":  "update-cache"
+                  },
+                  {
+                      "id":  "dingtalk-dbfiles",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\DingTalk\\DBFiles",
+                      "level":  "forbidden",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "钉钉",
+                      "kind":  "chat-db"
+                  },
+                  {
+                      "id":  "lark-update",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\LarkShell\\update",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  522269117,
+                      "app":  "飞书",
+                      "kind":  "update-cache"
+                  },
+                  {
+                      "id":  "lark-users",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\LarkShell\\aha\\users",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  4012718160,
+                      "app":  "飞书",
+                      "kind":  "chat-db"
+                  },
+                  {
+                      "id":  "discord-cache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\discord\\Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Discord",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "discord-codecache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\discord\\Code Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Discord",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "discord-gpucache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\discord\\GPUCache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Discord",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "slack-cache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Slack\\Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Slack",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "slack-codecache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Slack\\Code Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Slack",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "slack-gpucache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Slack\\GPUCache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Slack",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "steam-htmlcache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Steam\\htmlcache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Steam",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "teams-cache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Microsoft\\Teams\\Cache",
+                      "level":  "safe",
+                      "exists":  false,
+                      "bytes":  -1,
+                      "app":  "Teams 经典版",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "platformio-packages",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.platformio\\packages",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  3659697918,
+                      "app":  "PlatformIO",
+                      "kind":  "toolchain-cache"
+                  },
+                  {
+                      "id":  "platformio-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.platformio\\.cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  403128020,
+                      "app":  "PlatformIO",
+                      "kind":  "build-cache"
+                  },
+                  {
+                      "id":  "codex-runtimes",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.cache\\codex-runtimes",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  1463838403,
+                      "app":  "Codex CLI",
+                      "kind":  "runtime-cache"
+                  },
+                  {
+                      "id":  "codex-tmp",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.codex\\.tmp",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  85104535,
+                      "app":  "Codex CLI",
+                      "kind":  "temp"
+                  },
+                  {
+                      "id":  "mmx-updater-pending",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\@mmx-agentelectron-updater\\pending",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  541555471,
+                      "app":  "Electron updater",
+                      "kind":  "update-cache"
+                  },
+                  {
+                      "id":  "apifox-updater-pending",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\apifox-updater\\pending",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  194075571,
+                      "app":  "Apifox",
+                      "kind":  "update-cache"
+                  },
+                  {
+                      "id":  "wechat4-log",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Tencent\\xwechat\\log",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  1851850969,
+                      "app":  "微信 4.x",
+                      "kind":  "logs"
+                  },
+                  {
+                      "id":  "lark-sdk-log",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\LarkShell\\sdk_storage\\log",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  91200096,
+                      "app":  "飞书",
+                      "kind":  "logs"
+                  },
+                  {
+                      "id":  "qianfan-cache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\qianfan-desktop-app\\Cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  57033584,
+                      "app":  "千帆桌面端",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "qianfan-lightsandbox",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\qianfan-desktop-app\\lightsandbox",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  742897874,
+                      "app":  "千帆桌面端",
+                      "kind":  "runtime-cache"
+                  },
+                  {
+                      "id":  "ima-reshub",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\ima.copilot\\User Data\\reshub",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  292159492,
+                      "app":  "ima.copilot",
+                      "kind":  "resource-cache"
+                  },
+                  {
+                      "id":  "ima-crx-cache",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\ima.copilot\\User Data\\component_crx_cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  56151747,
+                      "app":  "ima.copilot",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "qoder-index",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.qoder\\shared_client\\index",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  3829000801,
+                      "app":  "Qoder",
+                      "kind":  "index"
+                  },
+                  {
+                      "id":  "qoder-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.qoder\\shared_client\\cache",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  239191101,
+                      "app":  "Qoder",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "rustup-toolchains",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.rustup\\toolchains",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  1327525570,
+                      "app":  "rustup",
+                      "kind":  "toolchain"
+                  },
+                  {
+                      "id":  "jb-full-line",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\full-line",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  178133634,
+                      "app":  "JetBrains",
+                      "kind":  "index"
+                  },
+                  {
+                      "id":  "jb-compile-server",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\compile-server",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  30296092,
+                      "app":  "JetBrains",
+                      "kind":  "build-cache"
+                  },
+                  {
+                      "id":  "jb-maven",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\Maven",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  58526636,
+                      "app":  "JetBrains",
+                      "kind":  "build-cache"
+                  },
+                  {
+                      "id":  "jb-vcs-log",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\vcs-log",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  24817855,
+                      "app":  "JetBrains",
+                      "kind":  "index"
+                  },
+                  {
+                      "id":  "jb-daemon-bundles",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\Daemon\\bundles",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  188502156,
+                      "app":  "JetBrains",
+                      "kind":  "runtime-cache"
+                  },
+                  {
+                      "id":  "codex-plugins",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.codex\\plugins",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  496214156,
+                      "app":  "Codex CLI",
+                      "kind":  "extensions"
+                  },
+                  {
+                      "id":  "codex-sessions",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.codex\\sessions",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  426306549,
+                      "app":  "Codex CLI",
+                      "kind":  "history"
+                  },
+                  {
+                      "id":  "codex-sandbox-bin",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.codex\\.sandbox-bin",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  342496352,
+                      "app":  "Codex CLI",
+                      "kind":  "runtime-cache"
+                  },
+                  {
+                      "id":  "wechat4-radium-users",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Tencent\\xwechat\\radium\\users",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  471919583,
+                      "app":  "微信 4.x",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "wemeet-global",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Tencent\\WeMeet\\Global",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  503407212,
+                      "app":  "腾讯会议",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "lark-sdk-storage",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\LarkShell\\sdk_storage",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  854678751,
+                      "app":  "飞书",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "apifox-data",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\apifox\\apifox-data",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  2297009143,
+                      "app":  "Apifox",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "qianfan-xdg",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\qianfan-desktop-app\\qianfan_desk_xdg",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  1107903800,
+                      "app":  "千帆桌面端",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "ima-user-data",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\ima.copilot\\User Data\\Default",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  570066014,
+                      "app":  "ima.copilot",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "lark-iron-users",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\LarkShell\\iron\\users",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  1658300497,
+                      "app":  "飞书",
+                      "kind":  "chat-db"
+                  },
+                  {
+                      "id":  "wechat4-radium-web",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Tencent\\xwechat\\radium\\web",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  827086877,
+                      "app":  "微信 4.x",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "wechat4-xplugin",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Tencent\\xwechat\\XPlugin",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  795936678,
+                      "app":  "微信 4.x",
+                      "kind":  "extensions"
+                  },
+                  {
+                      "id":  "ima-application",
+                      "section":  "4. 通讯 / 办公",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\ima.copilot\\Application",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  779109847,
+                      "app":  "ima.copilot",
+                      "kind":  "install"
+                  },
+                  {
+                      "id":  "qoder-bin",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.qoder\\shared_client\\bin",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  3116857535,
+                      "app":  "Qoder",
+                      "kind":  "install"
+                  },
+                  {
+                      "id":  "npm-global",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\npm",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  4642127536,
+                      "app":  "npm",
+                      "kind":  "install"
+                  },
+                  {
+                      "id":  "local-programs",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Programs",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  1753811388,
+                      "app":  "Windows",
+                      "kind":  "install"
+                  },
+                  {
+                      "id":  "user-downloads",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "C:\\Users\\Administrator\\Downloads",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  13366555663,
+                      "app":  "Windows",
+                      "kind":  "user-files"
+                  },
+                  {
+                      "id":  "user-videos",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "C:\\Users\\Administrator\\Videos",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  975445265,
+                      "app":  "Windows",
+                      "kind":  "user-files"
+                  },
+                  {
+                      "id":  "package-cache",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "C:\\ProgramData\\Package Cache",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  845583734,
+                      "app":  "Windows",
+                      "kind":  "install-cache"
+                  },
+                  {
+                      "id":  "tinytex",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\TinyTeX",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  517315835,
+                      "app":  "TinyTeX",
+                      "kind":  "install"
+                  },
+                  {
+                      "id":  "pnpm-package-manager-store",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\pnpm\\package-manager-store",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  318176253,
+                      "app":  "pnpm",
+                      "kind":  "package-cache"
+                  },
+                  {
+                      "id":  "xiaohongshu-browser",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\xiaohongshu-mcp\\browser",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  445242434,
+                      "app":  "xiaohongshu-mcp",
+                      "kind":  "browser-binary"
+                  },
+                  {
+                      "id":  "local-node-runtime",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.local\\node-v20.11.1-win-x64",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  162294874,
+                      "app":  "node",
+                      "kind":  "runtime-cache"
+                  },
+                  {
+                      "id":  "codex-uwp-localcache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_*\\LocalCache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  153071438,
+                      "app":  "Codex",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "vs-webview2-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\VisualStudio\\WebView2Cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  32300798,
+                      "app":  "Visual Studio",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "vs-roslyn-bak",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\VisualStudio\\Roslyn.bak_*",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  61995688,
+                      "app":  "Visual Studio",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "noi-code-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Noi\\Partitions\\*\\Code Cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  339328485,
+                      "app":  "Noi",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "openai-codex-runtimes",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\OpenAI\\Codex\\runtimes",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  253299320,
+                      "app":  "Codex",
+                      "kind":  "runtime-cache"
+                  },
+                  {
+                      "id":  "ccswitch-crx-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\com.ccswitch.desktop\\EBWebView\\component_crx_cache",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  22568432,
+                      "app":  "CC Switch",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "pi-sessions",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.pi\\agent\\sessions",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  332395679,
+                      "app":  "pi",
+                      "kind":  "history"
+                  },
+                  {
+                      "id":  "pi-npm",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.pi\\agent\\npm",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  195598328,
+                      "app":  "pi",
+                      "kind":  "install"
+                  },
+                  {
+                      "id":  "jdtls",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\jdtls",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  488247697,
+                      "app":  "jdtls",
+                      "kind":  "toolchain"
+                  },
+                  {
+                      "id":  "dingtalk-plugins",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\DingTalk\\plugins",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  319768368,
+                      "app":  "钉钉",
+                      "kind":  "extensions"
+                  },
+                  {
+                      "id":  "opengrep",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\opengrep",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  288799097,
+                      "app":  "opengrep",
+                      "kind":  "toolchain"
+                  },
+                  {
+                      "id":  "noi-partitions",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Noi\\Partitions",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  420505124,
+                      "app":  "Noi",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "vs-user-cache",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\VisualStudio",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  313532065,
+                      "app":  "Visual Studio",
+                      "kind":  "app-cache"
+                  },
+                  {
+                      "id":  "cbs-localstate",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_*\\LocalState",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  289343974,
+                      "app":  "Windows Shell",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "ccswitch-backups",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.cc-switch\\backups",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  284009990,
+                      "app":  "CC Switch",
+                      "kind":  "backup"
+                  },
+                  {
+                      "id":  "ccswitch-webview",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\com.ccswitch.desktop\\EBWebView",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  277254164,
+                      "app":  "CC Switch",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "minimax-v2",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.minimax\\v2",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  203597375,
+                      "app":  "MiniMax",
+                      "kind":  "app-data"
+                  },
+                  {
+                      "id":  "openai-codex-bin",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\OpenAI\\Codex\\bin",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  480604656,
+                      "app":  "Codex",
+                      "kind":  "install"
+                  }
+              ]
+}
