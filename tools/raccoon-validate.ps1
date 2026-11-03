@@ -111,11 +111,16 @@ $checked = 0
 foreach ($e in $entries) {
   if ([string]$e.level -ne 'safe') { continue }
   $p = To-Slash ([string]$e.path)
-  if ($p -match '[*?]') { continue }
-  if (-not (Test-Path -LiteralPath $p)) { continue }
-  $item = Get-Item -LiteralPath $p -Force -ErrorAction SilentlyContinue
-  if ($null -eq $item -or -not $item.PSIsContainer) { continue }
-  $h = Get-ExtHistogram $p
+  $targets = @()
+  if ($p -match '[*?]') {
+    $targets = @(Get-Item -Path $p -Force -ErrorAction SilentlyContinue)
+  } else {
+    $one = Get-Item -LiteralPath $p -Force -ErrorAction SilentlyContinue
+    if ($null -ne $one) { $targets = @($one) }
+  }
+  foreach ($t in $targets) {
+  if (-not $t.PSIsContainer) { continue }
+  $h = Get-ExtHistogram $t.FullName
   if ($h.files -eq 0) { continue }
   $checked++
   $user = 0
@@ -133,6 +138,7 @@ foreach ($e in $entries) {
   if ($mratio -gt [double]$pol.max_media_ratio) {
     Fail ("{0}: media ratio {1:P0} > {2:P0} ({3} of {4} files)" -f $e.id, $mratio, [double]$pol.max_media_ratio, $media, $h.files)
     $ratioFail++
+  }
   }
 }
 if ($ratioFail -eq 0) { Ok "user-content ratio: $checked safe entries under threshold" }
