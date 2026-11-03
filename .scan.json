@@ -1,11 +1,11 @@
 {
-    "safe_gb":  28.65,
-    "caution_gb":  17.125,
-    "forbidden_gb":  41.411,
-    "entries":  146,
-    "present":  93,
-    "missing":  53,
-    "scan_seconds":  38.26,
+    "safe_gb":  30.84,
+    "caution_gb":  18.647,
+    "forbidden_gb":  41.415,
+    "entries":  152,
+    "present":  101,
+    "missing":  51,
+    "scan_seconds":  15.87,
     "items":  [
                   {
                       "id":  "temp-user",
@@ -13,7 +13,7 @@
                       "path":  "C:\\Users\\Administrator\\AppData\\Local\\Temp",
                       "level":  "safe",
                       "exists":  true,
-                      "bytes":  12178774698,
+                      "bytes":  12170724964,
                       "app":  "Windows",
                       "kind":  "temp"
                   },
@@ -260,10 +260,10 @@
                   {
                       "id":  "chrome-login-data",
                       "section":  "2. 浏览器",
-                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\Login Data",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data\\*\\Login Data*",
                       "level":  "forbidden",
-                      "exists":  false,
-                      "bytes":  -1,
+                      "exists":  true,
+                      "bytes":  40960,
                       "app":  "Chrome",
                       "kind":  "credentials"
                   },
@@ -293,7 +293,7 @@
                       "path":  "C:\\Users\\Administrator\\AppData\\Local\\npm-cache",
                       "level":  "safe",
                       "exists":  true,
-                      "bytes":  1815802932,
+                      "bytes":  1815801207,
                       "app":  "npm",
                       "kind":  "package-cache"
                   },
@@ -603,7 +603,7 @@
                       "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\log",
                       "level":  "safe",
                       "exists":  true,
-                      "bytes":  155169381,
+                      "bytes":  156429042,
                       "app":  "JetBrains",
                       "kind":  "logs"
                   },
@@ -623,7 +623,7 @@
                       "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\jcef_cache",
                       "level":  "safe",
                       "exists":  true,
-                      "bytes":  25070837,
+                      "bytes":  25072609,
                       "app":  "JetBrains",
                       "kind":  "app-cache"
                   },
@@ -730,10 +730,10 @@
                   {
                       "id":  "dingtalk-log",
                       "section":  "4. 通讯 / 办公",
-                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\DingTalk\\log",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\DingTalk\\holmeslogs",
                       "level":  "safe",
-                      "exists":  false,
-                      "bytes":  -1,
+                      "exists":  true,
+                      "bytes":  5243270,
                       "app":  "钉钉",
                       "kind":  "logs"
                   },
@@ -898,32 +898,12 @@
                       "kind":  "temp"
                   },
                   {
-                      "id":  "mmx-updater-pending",
-                      "section":  "3. 开发工具",
-                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\@mmx-agentelectron-updater\\pending",
-                      "level":  "safe",
-                      "exists":  true,
-                      "bytes":  541555471,
-                      "app":  "Electron updater",
-                      "kind":  "update-cache"
-                  },
-                  {
-                      "id":  "apifox-updater-pending",
-                      "section":  "3. 开发工具",
-                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\apifox-updater\\pending",
-                      "level":  "safe",
-                      "exists":  true,
-                      "bytes":  194075571,
-                      "app":  "Apifox",
-                      "kind":  "update-cache"
-                  },
-                  {
                       "id":  "wechat4-log",
                       "section":  "4. 通讯 / 办公",
                       "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Tencent\\xwechat\\log",
                       "level":  "safe",
                       "exists":  true,
-                      "bytes":  1851850969,
+                      "bytes":  1904235663,
                       "app":  "微信 4.x",
                       "kind":  "logs"
                   },
@@ -993,7 +973,7 @@
                       "path":  "C:\\Users\\Administrator\\.qoder\\shared_client\\cache",
                       "level":  "caution",
                       "exists":  true,
-                      "bytes":  239191101,
+                      "bytes":  252473454,
                       "app":  "Qoder",
                       "kind":  "app-cache"
                   },
@@ -1093,7 +1073,7 @@
                       "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Tencent\\xwechat\\radium\\users",
                       "level":  "caution",
                       "exists":  true,
-                      "bytes":  471919583,
+                      "bytes":  471921253,
                       "app":  "微信 4.x",
                       "kind":  "app-data"
                   },
@@ -1163,7 +1143,7 @@
                       "path":  "C:\\Users\\Administrator\\AppData\\Roaming\\Tencent\\xwechat\\radium\\web",
                       "level":  "forbidden",
                       "exists":  true,
-                      "bytes":  827086877,
+                      "bytes":  831493915,
                       "app":  "微信 4.x",
                       "kind":  "app-data"
                   },
@@ -1233,7 +1213,7 @@
                       "path":  "C:\\Users\\Administrator\\Videos",
                       "level":  "forbidden",
                       "exists":  true,
-                      "bytes":  975445265,
+                      "bytes":  975475895,
                       "app":  "Windows",
                       "kind":  "user-files"
                   },
@@ -1353,7 +1333,7 @@
                       "path":  "C:\\Users\\Administrator\\.pi\\agent\\sessions",
                       "level":  "caution",
                       "exists":  true,
-                      "bytes":  332395679,
+                      "bytes":  334275587,
                       "app":  "pi",
                       "kind":  "history"
                   },
@@ -1423,7 +1403,7 @@
                       "path":  "C:\\Users\\Administrator\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_*\\LocalState",
                       "level":  "caution",
                       "exists":  true,
-                      "bytes":  289343974,
+                      "bytes":  289344587,
                       "app":  "Windows Shell",
                       "kind":  "app-data"
                   },
@@ -1466,6 +1446,86 @@
                       "bytes":  480604656,
                       "app":  "Codex",
                       "kind":  "install"
+                  },
+                  {
+                      "id":  "qodercli-old",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.qoder\\bin\\qodercli\\qodercli-1.0.21.exe",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  159099888,
+                      "app":  "Qoder",
+                      "kind":  "installer"
+                  },
+                  {
+                      "id":  "electron-updater-installer",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\*-updater\\installer.exe",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  1894541652,
+                      "app":  "Electron updater",
+                      "kind":  "installer"
+                  },
+                  {
+                      "id":  "electron-updater-pending",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\*-updater\\pending",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  823091583,
+                      "app":  "Electron updater",
+                      "kind":  "update-cache"
+                  },
+                  {
+                      "id":  "codegraph-bundles",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\.codegraph\\bundles",
+                      "level":  "safe",
+                      "exists":  true,
+                      "bytes":  159950066,
+                      "app":  "codegraph",
+                      "kind":  "runtime-cache"
+                  },
+                  {
+                      "id":  "jb-plugin-zips",
+                      "section":  "3. 开发工具",
+                      "path":  "C:\\Users\\Administrator\\AppData\\Local\\JetBrains\\*\\plugins\\*.zip",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  1499768926,
+                      "app":  "JetBrains",
+                      "kind":  "installer"
+                  },
+                  {
+                      "id":  "d-temp-trap",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "D:\\temp",
+                      "level":  "forbidden",
+                      "exists":  true,
+                      "bytes":  -1,
+                      "app":  "用户",
+                      "kind":  "user-files"
+                  },
+                  {
+                      "id":  "d-tmp",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "D:\\tmp",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  119125460,
+                      "app":  "用户",
+                      "kind":  "scratch"
+                  },
+                  {
+                      "id":  "d-codingprojects",
+                      "section":  "5. 用户目录与安装（别碰）",
+                      "path":  "D:\\codingProjects",
+                      "level":  "caution",
+                      "exists":  true,
+                      "bytes":  -1,
+                      "app":  "用户",
+                      "kind":  "project-build"
                   }
               ]
 }

@@ -1,0 +1,88 @@
+LOCK C:\Users\Administrator\AppData\Local\Temp\mozilla-temp-files
+LOCK C:\Users\Administrator\AppData\Local\Temp\24a5aec7-c20c-4c89-9d95-cbcac3a65d87.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\3103fdc8-1330-4d17-882d-735c0b707db8.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\41f76f43-3415-467d-85f8-248c3d58e68c.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\5bb625ae-f627-4d73-92ef-6d0265f460e0.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\7f4823a6-24c7-48dd-a724-3899ffa08a3a.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\86165131-6ce9-4cef-8ce9-792b6cf8aae0.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\911c1983-3833-48cc-8b20-a1e0204902aa.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\aaa94c35-105d-402d-9620-f7554566a4de.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\b730dd09-b7bb-4922-aecc-da50414de598.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\b9a9678d-6350-471d-a88c-a574713ed726.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\d80c19a4-b47e-48f7-8317-9dc5d00b1595.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\d8591274-6bb0-42ab-98fa-062926587231.tmp
+LOCK C:\Users\Administrator\AppData\Local\Temp\e2eb40e4-071f-460b-9b3e-ae249ee707ae.tmp
+MOV    11,606.9 MB  C:\Users\Administrator\AppData\Local\Temp
+MOV         0.0 MB  C:\Windows\Temp
+MOV         0.0 MB  C:\Windows\SoftwareDistribution\Download
+MOV         1.2 MB  C:\Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization
+MOV     4,198.7 MB  C:\Windows\LiveKernelReports
+MOV         0.0 MB  C:\Windows\Minidump
+MOV         0.0 MB  C:\Users\Administrator\AppData\Local\CrashDumps
+MOV         0.0 MB  C:\ProgramData\Microsoft\Windows\WER
+MOV         1.7 MB  C:\Users\Administrator\AppData\Local\D3DSCache
+MOV         0.2 MB  C:\Users\Administrator\AppData\Local\Microsoft\Windows\INetCache
+MOV         0.0 MB  C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Cache
+MOV         0.0 MB  C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Code Cache
+MOV         5.6 MB  C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\GPUCache
+MOV         0.0 MB  C:\Users\Administrator\AppData\Local\Mozilla\Firefox\Profiles\69tp0i90.default\cache2
+MOV     1,731.7 MB  C:\Users\Administrator\AppData\Local\npm-cache
+MOV       405.1 MB  C:\Users\Administrator\AppData\Local\uv\cache
+MOV        16.5 MB  C:\Users\Administrator\AppData\Local\JetBrains\DataGrip2025.2\log
+LOCK C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\log\indexing-diagnostic
+LOCK C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\log\jcef_chromium_4764.log
+MOV       132.8 MB  C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\log
+MOV         0.2 MB  C:\Users\Administrator\AppData\Local\JetBrains\DataGrip2025.2\tmp
+MOV         1.9 MB  C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\tmp
+MOV         0.0 MB  C:\Users\Administrator\AppData\Local\JetBrains\DataGrip2025.2\jcef_cache
+LOCK C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\jcef_cache\Default
+LOCK C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\jcef_cache\segmentation_platform
+LOCK C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\jcef_cache\first_party_sets.db
+LOCK C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\jcef_cache\first_party_sets.db-journal
+LOCK C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\jcef_cache\lockfile
+MOV        23.9 MB  C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\jcef_cache
+MOV         5.0 MB  C:\Users\Administrator\AppData\Roaming\DingTalk\holmeslogs
+MOV       498.1 MB  C:\Users\Administrator\AppData\Roaming\LarkShell\update
+MOV     3,490.2 MB  C:\Users\Administrator\.platformio\packages
+MOV       384.5 MB  C:\Users\Administrator\.platformio\.cache
+MOV     1,396.0 MB  C:\Users\Administrator\.cache\codex-runtimes
+MOV        81.2 MB  C:\Users\Administrator\.codex\.tmp
+LOCK C:\Users\Administrator\AppData\Roaming\Tencent\xwechat\log\player
+LOCK C:\Users\Administrator\AppData\Roaming\Tencent\xwechat\log\xplayer
+LOCK C:\Users\Administrator\AppData\Roaming\Tencent\xwechat\log\mm.mmap3
+MOV     1,818.0 MB  C:\Users\Administrator\AppData\Roaming\Tencent\xwechat\log
+MOV        87.0 MB  C:\Users\Administrator\AppData\Roaming\LarkShell\sdk_storage\log
+MOV        54.4 MB  C:\Users\Administrator\AppData\Roaming\qianfan-desktop-app\Cache
+MOV       708.5 MB  C:\Users\Administrator\AppData\Roaming\qianfan-desktop-app\lightsandbox
+MOV       278.6 MB  C:\Users\Administrator\AppData\Local\ima.copilot\User Data\reshub
+MOV        53.6 MB  C:\Users\Administrator\AppData\Local\ima.copilot\User Data\component_crx_cache
+MOV       303.4 MB  C:\Users\Administrator\AppData\Local\pnpm\package-manager-store
+MOV       424.6 MB  C:\Users\Administrator\AppData\Local\xiaohongshu-mcp\browser
+MOV       154.8 MB  C:\Users\Administrator\.local\node-v20.11.1-win-x64
+MOV       146.0 MB  C:\Users\Administrator\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache
+MOV        30.8 MB  C:\Users\Administrator\AppData\Local\Microsoft\VisualStudio\WebView2Cache
+MOV        59.1 MB  C:\Users\Administrator\AppData\Local\Microsoft\VisualStudio\Roslyn.bak_20260604_134932
+MOV         0.0 MB  C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_core\Code Cache
+LOCK C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_main\Code Cache\js
+LOCK C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_main\Code Cache\wasm
+FAIL      323.6 MB  C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_main\Code Cache
+LOCK C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_remote_noi_fork_google\Code Cache\js
+LOCK C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_remote_noi_fork_google\Code Cache\wasm
+FAIL        0.0 MB  C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_remote_noi_fork_google\Code Cache
+MOV       241.6 MB  C:\Users\Administrator\AppData\Local\OpenAI\Codex\runtimes
+MOV        21.5 MB  C:\Users\Administrator\AppData\Local\com.ccswitch.desktop\EBWebView\component_crx_cache
+MOV       151.7 MB  C:\Users\Administrator\.qoder\bin\qodercli\qodercli-1.0.21.exe
+MOV       508.1 MB  C:\Users\Administrator\AppData\Local\@mmx-agentelectron-updater\installer.exe
+MOV       132.2 MB  C:\Users\Administrator\AppData\Local\@zcodedesktop-updater\installer.exe
+MOV       185.1 MB  C:\Users\Administrator\AppData\Local\apifox-updater\installer.exe
+MOV        83.4 MB  C:\Users\Administrator\AppData\Local\autoglm-updater\installer.exe
+MOV       135.2 MB  C:\Users\Administrator\AppData\Local\podman-desktop-updater\installer.exe
+MOV       568.5 MB  C:\Users\Administrator\AppData\Local\qianfan-desktop-app-updater\installer.exe
+MOV       119.0 MB  C:\Users\Administrator\AppData\Local\sand-updater\installer.exe
+MOV        75.4 MB  C:\Users\Administrator\AppData\Local\switchhosts-updater\installer.exe
+MOV       516.5 MB  C:\Users\Administrator\AppData\Local\@mmx-agentelectron-updater\pending
+MOV       185.1 MB  C:\Users\Administrator\AppData\Local\apifox-updater\pending
+MOV        83.4 MB  C:\Users\Administrator\AppData\Local\autoglm-updater\pending
+MOV       152.5 MB  C:\Users\Administrator\.codegraph\bundles
+
+SUMMARY moved=56 failed=2 skipped=34 bytes=30.53 GB trash=C:\Users\Administrator\.raccoon-trash

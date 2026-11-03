@@ -1,0 +1,60 @@
+DRY    11,606.9 MB  C:\Users\Administrator\AppData\Local\Temp
+DRY         0.0 MB  C:\Windows\Temp
+DRY         0.0 MB  C:\Windows\SoftwareDistribution\Download
+DRY         1.2 MB  C:\Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization
+DRY     4,198.7 MB  C:\Windows\LiveKernelReports
+DRY         0.0 MB  C:\Windows\Minidump
+DRY         0.0 MB  C:\Users\Administrator\AppData\Local\CrashDumps
+DRY         0.0 MB  C:\ProgramData\Microsoft\Windows\WER
+DRY         1.7 MB  C:\Users\Administrator\AppData\Local\D3DSCache
+DRY         0.2 MB  C:\Users\Administrator\AppData\Local\Microsoft\Windows\INetCache
+DRY         0.0 MB  C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Cache
+DRY         0.0 MB  C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Code Cache
+DRY         5.6 MB  C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\GPUCache
+DRY         0.0 MB  C:\Users\Administrator\AppData\Local\Mozilla\Firefox\Profiles\69tp0i90.default\cache2
+DRY     1,731.7 MB  C:\Users\Administrator\AppData\Local\npm-cache
+DRY       405.1 MB  C:\Users\Administrator\AppData\Local\uv\cache
+DRY        16.5 MB  C:\Users\Administrator\AppData\Local\JetBrains\DataGrip2025.2\log
+DRY       132.8 MB  C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\log
+DRY         0.2 MB  C:\Users\Administrator\AppData\Local\JetBrains\DataGrip2025.2\tmp
+DRY         1.9 MB  C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\tmp
+DRY         0.0 MB  C:\Users\Administrator\AppData\Local\JetBrains\DataGrip2025.2\jcef_cache
+DRY        23.9 MB  C:\Users\Administrator\AppData\Local\JetBrains\IntelliJIdea2026.2\jcef_cache
+DRY         5.0 MB  C:\Users\Administrator\AppData\Roaming\DingTalk\holmeslogs
+DRY       498.1 MB  C:\Users\Administrator\AppData\Roaming\LarkShell\update
+DRY     3,490.2 MB  C:\Users\Administrator\.platformio\packages
+DRY       384.5 MB  C:\Users\Administrator\.platformio\.cache
+DRY     1,396.0 MB  C:\Users\Administrator\.cache\codex-runtimes
+DRY        81.2 MB  C:\Users\Administrator\.codex\.tmp
+DRY     1,817.6 MB  C:\Users\Administrator\AppData\Roaming\Tencent\xwechat\log
+DRY        87.0 MB  C:\Users\Administrator\AppData\Roaming\LarkShell\sdk_storage\log
+DRY        54.4 MB  C:\Users\Administrator\AppData\Roaming\qianfan-desktop-app\Cache
+DRY       708.5 MB  C:\Users\Administrator\AppData\Roaming\qianfan-desktop-app\lightsandbox
+DRY       278.6 MB  C:\Users\Administrator\AppData\Local\ima.copilot\User Data\reshub
+DRY        53.6 MB  C:\Users\Administrator\AppData\Local\ima.copilot\User Data\component_crx_cache
+DRY       303.4 MB  C:\Users\Administrator\AppData\Local\pnpm\package-manager-store
+DRY       424.6 MB  C:\Users\Administrator\AppData\Local\xiaohongshu-mcp\browser
+DRY       154.8 MB  C:\Users\Administrator\.local\node-v20.11.1-win-x64
+DRY       146.0 MB  C:\Users\Administrator\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache
+DRY        30.8 MB  C:\Users\Administrator\AppData\Local\Microsoft\VisualStudio\WebView2Cache
+DRY        59.1 MB  C:\Users\Administrator\AppData\Local\Microsoft\VisualStudio\Roslyn.bak_20260604_134932
+DRY         0.0 MB  C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_core\Code Cache
+DRY       323.6 MB  C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_main\Code Cache
+DRY         0.0 MB  C:\Users\Administrator\AppData\Roaming\Noi\Partitions\noi_remote_noi_fork_google\Code Cache
+DRY       241.6 MB  C:\Users\Administrator\AppData\Local\OpenAI\Codex\runtimes
+DRY        21.5 MB  C:\Users\Administrator\AppData\Local\com.ccswitch.desktop\EBWebView\component_crx_cache
+DRY       151.7 MB  C:\Users\Administrator\.qoder\bin\qodercli\qodercli-1.0.21.exe
+DRY       508.1 MB  C:\Users\Administrator\AppData\Local\@mmx-agentelectron-updater\installer.exe
+DRY       132.2 MB  C:\Users\Administrator\AppData\Local\@zcodedesktop-updater\installer.exe
+DRY       185.1 MB  C:\Users\Administrator\AppData\Local\apifox-updater\installer.exe
+DRY        83.4 MB  C:\Users\Administrator\AppData\Local\autoglm-updater\installer.exe
+DRY       135.2 MB  C:\Users\Administrator\AppData\Local\podman-desktop-updater\installer.exe
+DRY       568.5 MB  C:\Users\Administrator\AppData\Local\qianfan-desktop-app-updater\installer.exe
+DRY       119.0 MB  C:\Users\Administrator\AppData\Local\sand-updater\installer.exe
+DRY        75.4 MB  C:\Users\Administrator\AppData\Local\switchhosts-updater\installer.exe
+DRY       516.5 MB  C:\Users\Administrator\AppData\Local\@mmx-agentelectron-updater\pending
+DRY       185.1 MB  C:\Users\Administrator\AppData\Local\apifox-updater\pending
+DRY        83.4 MB  C:\Users\Administrator\AppData\Local\autoglm-updater\pending
+DRY       152.5 MB  C:\Users\Administrator\.codegraph\bundles
+
+SUMMARY moved=58 failed=0 skipped=34 bytes=30.84 GB trash=C:\Users\Administrator\.raccoon-trash

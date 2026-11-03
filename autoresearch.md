@@ -89,3 +89,19 @@ The host is the benchmark. C: has ~13 GB free. The map currently accounts for
 - Media needs its own threshold. Browser caches are legitimately 40-60% images,
   so images/video/audio sit in `media_ext` at 85%, not in `user_content_ext`
   at 30%.
+
+## Cleanup executed (2026-11-03 14:28)
+
+Operator authorized full execution. `tools/raccoon-clean.ps1` moved 58 targets
+(30.53 GB) into `C:\Users\Administrator\.raccoon-trash\`, then the trash was
+emptied after verifying every protected path was intact.
+
+- C: free 13.29 GB → **43.98 GB** (+30.69 GB)
+- 56 of 58 targets moved cleanly; 2 Noi `Code Cache` dirs were held by a
+  running process, one succeeded on retry
+- 3.6 MB remains in the trash (files locked by live processes) — harmless
+- `safe_gb` now reads 0.045 GB because the caches are gone, not because the
+  map regressed. The map is unchanged and still correct.
+
+Rebuild costs incurred: npm/pnpm/uv caches and PlatformIO packages will
+re-download on next use; Codex runtimes re-download on next run.
