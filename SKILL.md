@@ -46,6 +46,12 @@ powershell -File tools/raccoon-scan.ps1 -Render
 
 # 安全闸门：策略、独立复测、只读检查、探针准确率
 powershell -File tools/raccoon-validate.ps1
+
+# 清理：把 safe 项移进同盘 .raccoon-trash（可恢复，不直接删）
+powershell -File tools/raccoon-clean.ps1 -DryRun          # 先看清单
+powershell -File tools/raccoon-clean.ps1                  # 真移
+powershell -File tools/raccoon-clean.ps1 -Ids npm-cache   # 只清指定项
+# 确认战果后清空 trash：cmd /c rmdir /s /q %USERPROFILE%\.raccoon-trash
 ```
 
 `-Throttle`（默认 16）控制并行测量线程数。实测 16 是拐点：1→38 s，8→21 s，
