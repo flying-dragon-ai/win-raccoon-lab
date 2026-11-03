@@ -121,17 +121,24 @@ function Get-TreeStats {
   $stack.Push($Path)
   while ($stack.Count -gt 0 -and $count -lt $Limit) {
     $d = $stack.Pop()
-    try { $items = [System.IO.Directory]::GetFileSystemEntries($d) } catch { continue }
-    foreach ($i in $items) {
-      try { $attr = [System.IO.File]::GetAttributes($i) } catch { continue }
-      if ($attr -band [System.IO.FileAttributes]::ReparsePoint) { continue }
-      if ($attr -band [System.IO.FileAttributes]::Directory) { $stack.Push($i); continue }
-      $count++
-      $e = [System.IO.Path]::GetExtension($i).ToLowerInvariant()
-      if ($e -eq '') { $e = '(none)' }
-      if ($ext.ContainsKey($e)) { $ext[$e]++ } else { $ext[$e] = 1 }
-      if ($count -ge $Limit) { break }
-    }
+    $di = $null
+    try { $di = [System.IO.DirectoryInfo]::new($d) } catch { continue }
+    try {
+      foreach ($f in $di.EnumerateFiles()) {
+        $count++
+        $e = $f.Extension.ToLowerInvariant()
+        if ($e -eq '') { $e = '(none)' }
+        if ($ext.ContainsKey($e)) { $ext[$e]++ } else { $ext[$e] = 1 }
+        if ($count -ge $Limit) { break }
+      }
+    } catch { }
+    if ($count -ge $Limit) { break }
+    try {
+      foreach ($s in $di.EnumerateDirectories()) {
+        if ($s.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue }
+        $stack.Push($s.FullName)
+      }
+    } catch { }
   }
   $top = ($ext.GetEnumerator() | Sort-Object Value -Descending |
           Select-Object -First 6 | ForEach-Object { "$($_.Key):$($_.Value)" }) -join ','

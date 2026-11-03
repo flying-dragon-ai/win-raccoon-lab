@@ -6,8 +6,9 @@ $ErrorActionPreference = 'Stop'
 if (-not $Root) { $Root = Split-Path -Parent $PSScriptRoot }
 
 $script:Fail = 0
+$script:Sw = [System.Diagnostics.Stopwatch]::StartNew()
 function Fail { param($m) Write-Host "FAIL $m"; $script:Fail++ }
-function Ok   { param($m) Write-Host "ok   $m" }
+function Ok   { param($m) Write-Host ("ok   {0}  [{1:N1}s]" -f $m, $script:Sw.Elapsed.TotalSeconds) }
 function Warn { param($m) Write-Host "warn $m" }
 
 $mapPath  = Join-Path $Root 'tools/cache-map.jsonl'
@@ -115,17 +116,24 @@ function Get-ExtHistogram {
   $stack.Push($Path)
   while ($stack.Count -gt 0 -and $count -lt $Limit) {
     $d = $stack.Pop()
-    try { $items = [System.IO.Directory]::GetFileSystemEntries($d) } catch { continue }
-    foreach ($i in $items) {
-      try { $attr = [System.IO.File]::GetAttributes($i) } catch { continue }
-      if ($attr -band [System.IO.FileAttributes]::ReparsePoint) { continue }
-      if ($attr -band [System.IO.FileAttributes]::Directory) { $stack.Push($i); continue }
-      $count++
-      $x = [System.IO.Path]::GetExtension($i).ToLowerInvariant()
-      if ($x -eq '') { $x = '(none)' }
-      if ($hist.ContainsKey($x)) { $hist[$x]++ } else { $hist[$x] = 1 }
-      if ($count -ge $Limit) { break }
-    }
+    $di = $null
+    try { $di = [System.IO.DirectoryInfo]::new($d) } catch { continue }
+    try {
+      foreach ($f in $di.EnumerateFiles()) {
+        $count++
+        $x = $f.Extension.ToLowerInvariant()
+        if ($x -eq '') { $x = '(none)' }
+        if ($hist.ContainsKey($x)) { $hist[$x]++ } else { $hist[$x] = 1 }
+        if ($count -ge $Limit) { break }
+      }
+    } catch { }
+    if ($count -ge $Limit) { break }
+    try {
+      foreach ($s in $di.EnumerateDirectories()) {
+        if ($s.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue }
+        $stack.Push($s.FullName)
+      }
+    } catch { }
   }
   return [pscustomobject]@{ files = $count; hist = $hist }
 }
@@ -168,26 +176,55 @@ foreach ($e in $entries) {
 if ($ratioFail -eq 0) { Ok "user-content ratio: $checked safe entries under threshold" }
 
 # ---------------------------------------------------------------- 5. independent re-measure
-function Ref-Measure {
-  param([string]$Path, [int]$BudgetSec = 60)
-  $sw = [System.Diagnostics.Stopwatch]::StartNew()
-  $sum = [int64]0
-  $stack = New-Object 'System.Collections.Generic.Stack[string]'
-  $stack.Push($Path)
-  while ($stack.Count -gt 0) {
-    if ($sw.Elapsed.TotalSeconds -gt $BudgetSec) { return -1 }
-    $d = $stack.Pop()
-    $di = $null
-    try { $di = [System.IO.DirectoryInfo]::new($d) } catch { continue }
-    try { $files = $di.EnumerateFiles() } catch { $files = @() }
-    foreach ($f in $files) { try { $sum += $f.Length } catch { } }
-    try { $subs = $di.EnumerateDirectories() } catch { $subs = @() }
-    foreach ($s in $subs) {
-      try { if ($s.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue } } catch { continue }
-      $stack.Push($s.FullName)
+function Ref-Measure-Many {
+  param([string[]]$Paths, [int]$BudgetSec = 60, [int]$Throttle = 4)
+  $res = @{}
+  if ($null -eq $Paths -or $Paths.Count -eq 0) { return $res }
+
+  $worker = {
+    param($root, $budget)
+    $sw = [System.Diagnostics.Stopwatch]::StartNew()
+    $sum = [int64]0
+    $stack = New-Object 'System.Collections.Generic.Stack[string]'
+    $stack.Push($root)
+    while ($stack.Count -gt 0) {
+      if ($sw.Elapsed.TotalSeconds -gt $budget) { return [int64]-1 }
+      $d = $stack.Pop()
+      $di = $null
+      try { $di = [System.IO.DirectoryInfo]::new($d) } catch { continue }
+      try { foreach ($f in $di.EnumerateFiles()) { $sum += $f.Length } } catch { }
+      try {
+        foreach ($s in $di.EnumerateDirectories()) {
+          if ($s.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue }
+          $stack.Push($s.FullName)
+        }
+      } catch { }
     }
-    }
-  return $sum
+    return $sum
+  }
+
+  $n = [Math]::Min($Throttle, $Paths.Count)
+  $pool = [runspacefactory]::CreateRunspacePool(1, $n)
+  $pool.Open()
+  $jobs = New-Object 'System.Collections.Generic.List[object]'
+  foreach ($p in $Paths) {
+    $ps = [powershell]::Create()
+    $ps.RunspacePool = $pool
+    [void]$ps.AddScript($worker).AddArgument($p).AddArgument($BudgetSec)
+    $jobs.Add([pscustomobject]@{ Path = $p; PS = $ps; Handle = $ps.BeginInvoke() })
+  }
+  foreach ($j in $jobs) {
+    $v = [int64]-1
+    try {
+      $r = $j.PS.EndInvoke($j.Handle)
+      if ($null -ne $r -and $r.Count -gt 0) { $v = [int64]$r[0] }
+    } catch { $v = -1 }
+    $res[$j.Path] = $v
+    $j.PS.Dispose()
+  }
+  $pool.Close()
+  $pool.Dispose()
+  return $res
 }
 
 $scanJson = & powershell -NoProfile -ExecutionPolicy Bypass -File $scanPath -Json 2>$null | Out-String
@@ -195,11 +232,14 @@ try { $scan = $scanJson | ConvertFrom-Json } catch { Fail 'scanner -Json output 
 
 if ($null -ne $scan) {
   $topSafe = $scan.items | Where-Object { $_.level -eq 'safe' -and $_.exists -and $_.bytes -gt 0 } |
-             Sort-Object bytes -Descending | Select-Object -First 3
+             Sort-Object bytes -Descending | Select-Object -First 4
   $refFail = 0
   $refDone = 0
+  $refPaths = @($topSafe | ForEach-Object { $_.path })
+  $refSizes = Ref-Measure-Many -Paths $refPaths -BudgetSec 90 -Throttle 4
   foreach ($it in $topSafe) {
-    $ref = Ref-Measure $it.path
+    $ref = [int64]-1
+    if ($refSizes.ContainsKey($it.path)) { $ref = [int64]$refSizes[$it.path] }
     if ($ref -lt 0) { Warn "ref-measure budget exceeded: $($it.path)"; continue }
     $refDone++
     $tol = [double]$pol.ref_measure_tolerance
