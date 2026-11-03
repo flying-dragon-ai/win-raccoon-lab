@@ -1,22 +1,125 @@
 {
   "note": "Ground truth for the probe classifier. Paths are relative to fixtures/tree.",
   "cases": [
-    { "rel": "cache",                  "level": "safe",      "bytes": 307200 },
-    { "rel": "app/Cache",              "level": "safe",      "bytes": 102400 },
-    { "rel": "app/Code Cache",         "level": "safe",      "bytes": 20480  },
-    { "rel": "app/GPUCache",           "level": "safe",      "bytes": 10240  },
-    { "rel": "dev/npm-cache",          "level": "safe",      "bytes": 102400 },
-    { "rel": "dev/.cargo",             "level": "safe",      "bytes": 61440  },
-    { "rel": "dev/node_modules",       "level": "safe",      "bytes": 51200  },
-    { "rel": "dev/target",             "level": "safe",      "bytes": 81920  },
-    { "rel": "user/Documents",         "level": "forbidden", "bytes": 61440  },
-    { "rel": "user/msg/attach",        "level": "forbidden", "bytes": 143360 },
-    { "rel": "user/Login Data",        "level": "forbidden", "bytes": 5120   },
-    { "rel": "user/plugins",           "level": "forbidden", "bytes": 46080  },
-    { "rel": "user/aha/users",         "level": "forbidden", "bytes": 40960  },
-    { "rel": "user/db_storage",        "level": "forbidden", "bytes": 30720  },
-    { "rel": "mixed/cache-with-docs",  "level": "forbidden", "bytes": 112640 },
-    { "rel": "loop-cache",             "level": "safe",      "bytes": 10240  },
-    { "rel": "empty-cache",            "level": "safe",      "bytes": 0      }
+    {
+      "rel": "cache",
+      "level": "safe",
+      "bytes": 307200
+    },
+    {
+      "rel": "app/Cache",
+      "level": "safe",
+      "bytes": 102400
+    },
+    {
+      "rel": "app/Code Cache",
+      "level": "safe",
+      "bytes": 20480
+    },
+    {
+      "rel": "app/GPUCache",
+      "level": "safe",
+      "bytes": 10240
+    },
+    {
+      "rel": "dev/npm-cache",
+      "level": "safe",
+      "bytes": 102400
+    },
+    {
+      "rel": "dev/.cargo",
+      "level": "safe",
+      "bytes": 61440
+    },
+    {
+      "rel": "dev/node_modules",
+      "level": "safe",
+      "bytes": 51200
+    },
+    {
+      "rel": "dev/target",
+      "level": "safe",
+      "bytes": 81920
+    },
+    {
+      "rel": "user/Documents",
+      "level": "forbidden",
+      "bytes": 61440
+    },
+    {
+      "rel": "user/msg/attach",
+      "level": "forbidden",
+      "bytes": 143360
+    },
+    {
+      "rel": "user/Login Data",
+      "level": "forbidden",
+      "bytes": 5120
+    },
+    {
+      "rel": "user/plugins",
+      "level": "forbidden",
+      "bytes": 46080
+    },
+    {
+      "rel": "user/aha/users",
+      "level": "forbidden",
+      "bytes": 40960
+    },
+    {
+      "rel": "user/db_storage",
+      "level": "forbidden",
+      "bytes": 30720
+    },
+    {
+      "rel": "mixed/cache-with-docs",
+      "level": "forbidden",
+      "bytes": 112640
+    },
+    {
+      "rel": "loop-cache",
+      "level": "safe",
+      "bytes": 10240
+    },
+    {
+      "rel": "empty-cache",
+      "level": "safe",
+      "bytes": 0
+    },
+    {
+      "rel": "upd/foo-updater/installer.exe",
+      "level": "safe",
+      "bytes": 5242880
+    },
+    {
+      "rel": "upd/foo-updater/pending",
+      "level": "safe",
+      "bytes": 3145728
+    },
+    {
+      "rel": "dev/runtimes",
+      "level": "safe",
+      "bytes": 2097152
+    },
+    {
+      "rel": "dev/bundles",
+      "level": "safe",
+      "bytes": 2097152
+    },
+    {
+      "rel": "user/LevelDB",
+      "level": "forbidden",
+      "bytes": 1049600
+    },
+    {
+      "rel": "dev/packages",
+      "level": "caution",
+      "bytes": 2097152
+    },
+    {
+      "rel": "user/backups",
+      "level": "caution",
+      "bytes": 1048576
+    }
   ]
 }

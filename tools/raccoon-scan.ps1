@@ -191,7 +191,11 @@ $script:CacheNames = @(
   '.puppeteer','.electron','.ivy2','.sbt','crashdumps','wer','d3dscache',
   'dxcache','glcache','thumbcache','inetcache','deliveryoptimization',
   'softwaredistribution','prefetch','minidump','livekernelreports','windows.old',
-  'service worker','cachestorage','blob_storage'
+  'service worker','cachestorage','blob_storage','pending','runtimes','bundles',
+  'reshub','update','installer','crx_cache','component_crx_cache'
+)
+$script:InstallerExt = @(
+  '.exe','.msi','.msix','.zip','.7z','.iso','.cab','.vsix','.nupkg','.appx','.bundle'
 )
 $script:ForbiddenLeafNames = @(
   'plugins','extensions','users','db_storage','msg','tdata','avd','installer',
@@ -221,6 +225,17 @@ function Invoke-Probe {
 
   if (-not (Test-Path -LiteralPath $p)) {
     return [pscustomobject]@{ path = $p; level = 'missing'; bytes = -1; files = 0; ext = ''; reasons = 'path does not exist' }
+  }
+
+  $item = Get-Item -LiteralPath $p -Force -ErrorAction SilentlyContinue
+  if ($null -ne $item -and -not $item.PSIsContainer) {
+    $fx = $item.Extension.ToLowerInvariant()
+    $parentLeaf = (Split-Path -Leaf (Split-Path -Parent $p)).ToLowerInvariant()
+    $fb = [int64]$item.Length
+    if (($script:InstallerExt -contains $fx) -and ($parentLeaf -match '-updater$|^update|^pending')) {
+      return [pscustomobject]@{ path = $p; level = 'safe'; bytes = $fb; files = 1; ext = $fx; reasons = "installer-in-updater:$parentLeaf" }
+    }
+    return [pscustomobject]@{ path = $p; level = 'caution'; bytes = $fb; files = 1; ext = $fx; reasons = 'single-file' }
   }
 
   $bytes = Measure-Tree $p
@@ -261,7 +276,8 @@ function Invoke-Probe {
   }
   $leafForbidden = $script:ForbiddenLeafNames -contains $leaf
   $nameHit = ($script:CacheNames -contains $leaf) -or
-             ($leaf -match '(^|[-_.])cache$|^cache$|^caches$|^cache2$|^cachestorage$')
+             ($leaf -match '(^|[-_.])cache$|^cache$|^caches$|^cache2$|^cachestorage$') -or
+             ($leaf -match '-updater$')
 
   if ($leafForbidden) { $reasons.Add("leaf-is-user-state:$leaf") }
   if ($dbHit) { $reasons.Add('contains-database-files') }
@@ -435,7 +451,7 @@ foreach ($e in $entries) {
   $paths = @()
   foreach ($t in $targets) {
     $paths += $t.FullName
-    if (-not $NoMeasure) { $allPaths.Add($t.FullName) }
+    if (-not $NoMeasure -and $e.measure -ne $false) { $allPaths.Add($t.FullName) }
   }
   $plan.Add([pscustomobject]@{ Entry = $e; Resolved = $resolved; Paths = $paths })
 }
@@ -453,7 +469,9 @@ foreach ($p in $plan) {
   $bytes = -1
   if ($exists) {
     $present++
-    if ($NoMeasure) {
+    if ($e.measure -eq $false) {
+      $bytes = -1
+    } elseif ($NoMeasure) {
       $bytes = 0
     } else {
       $bytes = [int64]0

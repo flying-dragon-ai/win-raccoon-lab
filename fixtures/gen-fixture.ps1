@@ -57,6 +57,24 @@ New-Blob "$Root/mixed/cache-with-docs/d3.docx" 20480
 New-Blob "$Root/mixed/cache-with-docs/d4.docx" 20480
 New-Blob "$Root/mixed/cache-with-docs/d5.docx" 20480
 
+# --- updater leftovers: installer.exe + pending ------------------------------
+New-Blob "$Root/upd/foo-updater/installer.exe" 5242880
+New-Blob "$Root/upd/foo-updater/pending/update.exe" 3145728
+
+# --- downloaded runtimes / bundles -------------------------------------------
+New-Blob "$Root/dev/runtimes/py/bin/python.exe" 2097152
+New-Blob "$Root/dev/bundles/win32-x64-1.0/node.exe" 2097152
+
+# --- LevelDB store: user state, must be forbidden ----------------------------
+New-Blob "$Root/user/LevelDB/000001.ldb" 1048576
+New-Blob "$Root/user/LevelDB/CURRENT" 1024
+
+# --- ambiguous: 'packages' is not a cache name, must stay caution ------------
+New-Blob "$Root/dev/packages/toolchain.bin" 2097152
+
+# --- ambiguous: 'backups' is not a cache name, must stay caution -------------
+New-Blob "$Root/user/backups/config.json" 1048576
+
 # --- junction loop: must not hang, must not double count ---------------------
 New-Blob "$Root/loop-cache/payload.bin" 10240
 $loopTarget = Join-Path $Root 'loop-cache'
