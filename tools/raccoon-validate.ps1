@@ -52,6 +52,30 @@ foreach ($e in $entries) {
 }
 if ($script:Fail -eq 0) { Ok 'no duplicate ids or paths' }
 
+# ---------------------------------------------------------------- 2b. same-level nesting
+# Two entries at the same level whose paths nest would count the same bytes twice.
+$byLevel = @{}
+foreach ($e in $entries) {
+  $lv = [string]$e.level
+  if (-not $byLevel.ContainsKey($lv)) { $byLevel[$lv] = New-Object 'System.Collections.Generic.List[object]' }
+  $byLevel[$lv].Add([pscustomobject]@{ id = $e.id; p = (To-Slash ([string]$e.path)).ToLowerInvariant() })
+}
+$nestFail = 0
+foreach ($lv in $byLevel.Keys) {
+  $list = $byLevel[$lv]
+  for ($i = 0; $i -lt $list.Count; $i++) {
+    for ($j = $i + 1; $j -lt $list.Count; $j++) {
+      $a = $list[$i]; $b = $list[$j]
+      if ($a.p -eq $b.p) { continue }
+      if ($a.p.StartsWith($b.p + '/') -or $b.p.StartsWith($a.p + '/')) {
+        Fail "same-level nesting double counts ($lv): $($a.id) [$($a.p)] vs $($b.id) [$($b.p)]"
+        $nestFail++
+      }
+    }
+  }
+}
+if ($nestFail -eq 0) { Ok 'no same-level nesting (no double counting)' }
+
 # ---------------------------------------------------------------- 3. safe-entry policy
 $allowedRoots = @($pol.allowed_roots) | ForEach-Object { (To-Slash $_).ToLowerInvariant() }
 

@@ -23,6 +23,8 @@ param(
   [string]$ProbeList,
   [switch]$Discover,
   [int]$MinMB = 50,
+  [switch]$BigFiles,
+  [int]$Depth = 4,
   [switch]$Render,
   [switch]$Json,
   [switch]$NoMeasure,
@@ -332,6 +334,47 @@ if ($Discover) {
   }
   $rows | Sort-Object bytes -Descending | Select-Object -First $Top |
     ForEach-Object { Write-Host ("DISC|{0}|{1}" -f $_.bytes, $_.path) }
+  exit 0
+}
+
+if ($BigFiles) {
+  $roots = @($env:LOCALAPPDATA, $env:APPDATA, $env:USERPROFILE, 'C:\ProgramData')
+  $exts = @('.exe','.msi','.msix','.zip','.7z','.iso','.dmg','.pkg','.cab','.vsix','.nupkg','.appx','.bundle')
+  $covered = New-Object 'System.Collections.Generic.List[string]'
+  foreach ($e in (Read-Map $MapPath)) {
+    $covered.Add((Resolve-RaccoonPath ([string]$e.path)).ToLowerInvariant())
+  }
+  $rows = New-Object 'System.Collections.Generic.List[object]'
+  foreach ($r in $roots) {
+    if (-not (Test-Path -LiteralPath $r)) { continue }
+    $stack = New-Object 'System.Collections.Generic.Stack[object]'
+    $stack.Push([pscustomobject]@{ P = $r; D = 0 })
+    while ($stack.Count -gt 0) {
+      $cur = $stack.Pop()
+      if ($cur.D -ge $Depth) { continue }
+      $di = $null
+      try { $di = [System.IO.DirectoryInfo]::new($cur.P) } catch { continue }
+      try {
+        foreach ($f in $di.EnumerateFiles()) {
+          if ($exts -notcontains $f.Extension.ToLowerInvariant()) { continue }
+          if ($f.Length -lt ([int64]$MinMB * 1MB)) { continue }
+          $fl = $f.FullName.ToLowerInvariant()
+          $skip = $false
+          foreach ($c in $covered) { if ($fl -eq $c -or $fl.StartsWith($c + '\')) { $skip = $true; break } }
+          if ($skip) { continue }
+          $rows.Add([pscustomobject]@{ bytes = $f.Length; path = $f.FullName })
+        }
+      } catch { }
+      try {
+        foreach ($s in $di.EnumerateDirectories()) {
+          if ($s.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue }
+          $stack.Push([pscustomobject]@{ P = $s.FullName; D = $cur.D + 1 })
+        }
+      } catch { }
+    }
+  }
+  $rows | Sort-Object bytes -Descending | Select-Object -First $Top |
+    ForEach-Object { Write-Host ("BIG|{0}|{1}" -f $_.bytes, $_.path) }
   exit 0
 }
 

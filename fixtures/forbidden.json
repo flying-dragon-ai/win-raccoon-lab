@@ -132,6 +132,8 @@
     "C:/Windows.old",
     "C:/Windows/ServiceProfiles",
     "C:/Windows/WinSxS",
-    "C:/ProgramData"
+    "C:/ProgramData",
+    "%USERPROFILE%/.codegraph",
+    "%USERPROFILE%/.aspire"
   ]
 }
