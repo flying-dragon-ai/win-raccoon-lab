@@ -21,6 +21,8 @@ param(
   [string]$OutJson,
   [string]$Probe,
   [string]$ProbeList,
+  [switch]$Discover,
+  [int]$MinMB = 50,
   [switch]$Render,
   [switch]$Json,
   [switch]$NoMeasure,
@@ -145,10 +147,13 @@ $script:DbExt = @(
   '.pst','.ost','.edb','.kdbx','.wallet'
 )
 $script:UserContentExt = @(
-  '.doc','.docx','.xls','.xlsx','.ppt','.pptx','.pdf','.txt','.md','.rtf',
+  '.doc','.docx','.xls','.xlsx','.ppt','.pptx','.pdf','.rtf',
+  '.db','.sqlite','.sqlite3','.ldb','.pst','.ost','.eml',
+  '.key','.pem','.pfx','.kdbx','.wallet','.ovpn'
+)
+$script:MediaExt = @(
   '.jpg','.jpeg','.png','.gif','.bmp','.heic','.mp4','.mov','.avi','.mkv',
-  '.mp3','.wav','.flac','.zip','.rar','.7z','.db','.sqlite','.sqlite3',
-  '.pst','.ost','.eml','.msg','.key','.pem','.pfx','.kdbx','.wallet','.ovpn'
+  '.mp3','.wav','.flac'
 )
 
 function Invoke-Probe {
@@ -180,13 +185,17 @@ function Invoke-Probe {
 
   $stats = Get-TreeStats $p
   $userHits = 0
+  $mediaHits = 0
   $totalHits = 0
   foreach ($k in $stats.extMap.Keys) {
     $totalHits += $stats.extMap[$k]
     if ($script:UserContentExt -contains $k) { $userHits += $stats.extMap[$k] }
+    if ($script:MediaExt -contains $k) { $mediaHits += $stats.extMap[$k] }
   }
   $userRatio = 0.0
   if ($totalHits -gt 0) { $userRatio = [double]$userHits / [double]$totalHits }
+  $mediaRatio = 0.0
+  if ($totalHits -gt 0) { $mediaRatio = [double]$mediaHits / [double]$totalHits }
 
   $dbHit = $false
   foreach ($k in $stats.extMap.Keys) {
@@ -200,9 +209,10 @@ function Invoke-Probe {
   if ($dbHit) { $reasons.Add('contains-database-files') }
   if ($nameHit) { $reasons.Add("name-is-cache:$leaf") }
   if ($userRatio -gt 0.30) { $reasons.Add(("user-content-ratio={0:P0}" -f $userRatio)) }
+  if ($mediaRatio -gt 0.85) { $reasons.Add(("media-ratio={0:P0}" -f $mediaRatio)) }
 
   $level = 'caution'
-  if ($leafForbidden -or $userRatio -gt 0.60) { $level = 'forbidden' }
+  if ($leafForbidden -or $userRatio -gt 0.60 -or $mediaRatio -gt 0.85) { $level = 'forbidden' }
   elseif ($dbHit -and -not $nameHit) { $level = 'forbidden' }
   elseif ($nameHit -and $userRatio -le 0.30) { $level = 'safe' }
   elseif ($stats.files -eq 0) { $reasons.Add('empty') }
@@ -245,6 +255,36 @@ function Invoke-Render {
 }
 
 # ---------------------------------------------------------------- main
+
+if ($Discover) {
+  $roots = @($env:LOCALAPPDATA, $env:APPDATA, $env:USERPROFILE, 'C:\ProgramData')
+  $covered = New-Object 'System.Collections.Generic.List[string]'
+  foreach ($e in (Read-Map $MapPath)) {
+    $rp = (Resolve-RaccoonPath ([string]$e.path)).ToLowerInvariant()
+    $covered.Add($rp)
+  }
+  $rows = New-Object 'System.Collections.Generic.List[object]'
+  foreach ($r in $roots) {
+    if (-not (Test-Path -LiteralPath $r)) { continue }
+    $kids = @(Get-ChildItem -LiteralPath $r -Directory -Force -ErrorAction SilentlyContinue)
+    foreach ($k in $kids) {
+      try { if ($k.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue } } catch { continue }
+      $kl = $k.FullName.ToLowerInvariant()
+      $skip = $false
+      foreach ($c in $covered) {
+        if ($c -eq $kl) { $skip = $true; break }
+        if ($kl.StartsWith($c + '\')) { $skip = $true; break }
+      }
+      if ($skip) { continue }
+      $b = Measure-Tree $k.FullName
+      if ($b -lt ([int64]$MinMB * 1MB)) { continue }
+      $rows.Add([pscustomobject]@{ bytes = $b; path = $k.FullName })
+    }
+  }
+  $rows | Sort-Object bytes -Descending | Select-Object -First $Top |
+    ForEach-Object { Write-Host ("DISC|{0}|{1}" -f $_.bytes, $_.path) }
+  exit 0
+}
 
 if ($ProbeList) {
   foreach ($line in [System.IO.File]::ReadAllLines($ProbeList)) {

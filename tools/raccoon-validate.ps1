@@ -53,19 +53,7 @@ foreach ($e in $entries) {
 if ($script:Fail -eq 0) { Ok 'no duplicate ids or paths' }
 
 # ---------------------------------------------------------------- 3. safe-entry policy
-$allowedRoots = @(
-  $env:LOCALAPPDATA, $env:APPDATA, $env:TEMP,
-  (Join-Path $env:USERPROFILE '.cache'), (Join-Path $env:USERPROFILE '.cargo'),
-  (Join-Path $env:USERPROFILE '.nuget'), (Join-Path $env:USERPROFILE '.m2'),
-  (Join-Path $env:USERPROFILE '.gradle'), (Join-Path $env:USERPROFILE 'go'),
-  (Join-Path $env:USERPROFILE 'scoop'), (Join-Path $env:USERPROFILE '.conda'),
-  (Join-Path $env:USERPROFILE '.android'), (Join-Path $env:USERPROFILE '.rustup'),
-  (Join-Path $env:USERPROFILE 'Documents/xwechat_files'),
-  (Join-Path $env:USERPROFILE 'Documents/WeChat Files'),
-  'C:/Windows/Temp', 'C:/Windows/SoftwareDistribution', 'C:/Windows/Prefetch',
-  'C:/Windows/LiveKernelReports', 'C:/Windows/Minidump', 'C:/Windows.old',
-  'C:/Windows/ServiceProfiles', 'C:/Windows/WinSxS', 'C:/ProgramData'
-) | ForEach-Object { (To-Slash $_).ToLowerInvariant() }
+$allowedRoots = @($pol.allowed_roots) | ForEach-Object { (To-Slash $_).ToLowerInvariant() }
 
 $policyFail = 0
 foreach ($e in $entries) {
@@ -131,10 +119,19 @@ foreach ($e in $entries) {
   if ($h.files -eq 0) { continue }
   $checked++
   $user = 0
-  foreach ($k in $h.hist.Keys) { if ($pol.user_content_ext -contains $k) { $user += $h.hist[$k] } }
+  $media = 0
+  foreach ($k in $h.hist.Keys) {
+    if ($pol.user_content_ext -contains $k) { $user += $h.hist[$k] }
+    if ($pol.media_ext -contains $k) { $media += $h.hist[$k] }
+  }
   $ratio = [double]$user / [double]$h.files
+  $mratio = [double]$media / [double]$h.files
   if ($ratio -gt [double]$pol.max_user_content_ratio) {
     Fail ("{0}: user-content ratio {1:P0} > {2:P0} ({3} of {4} files)" -f $e.id, $ratio, [double]$pol.max_user_content_ratio, $user, $h.files)
+    $ratioFail++
+  }
+  if ($mratio -gt [double]$pol.max_media_ratio) {
+    Fail ("{0}: media ratio {1:P0} > {2:P0} ({3} of {4} files)" -f $e.id, $mratio, [double]$pol.max_media_ratio, $media, $h.files)
     $ratioFail++
   }
 }
