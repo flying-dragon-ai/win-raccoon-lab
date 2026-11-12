@@ -51,11 +51,13 @@ powershell -File tools/raccoon-validate.ps1
 powershell -File tools/raccoon-clean.ps1 -DryRun          # 先看清单
 powershell -File tools/raccoon-clean.ps1                  # 真移
 powershell -File tools/raccoon-clean.ps1 -Ids npm-cache   # 只清指定项
+powershell -File tools/raccoon-clean.ps1 -IncludeCaution   # 连 caution 项一起移（默认只移 safe）
 # 确认战果后清空 trash：cmd /c rmdir /s /q %USERPROFILE%\.raccoon-trash
 ```
 
 `-Throttle`（默认 16）控制并行测量线程数。实测 16 是拐点：1→38 s，8→21 s，
 16→8 s，24→10 s，32→13 s。再高就是磁盘元数据争用。
+`-NoMeasure` 跳过体积实测，只出条目与存在性——地图改完想快速看结构时用。
 
 ## 工作流
 

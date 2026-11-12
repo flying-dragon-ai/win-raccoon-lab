@@ -162,6 +162,20 @@ run?* Yes → gone. No → stays. Value unclear → `archive/`.
 - `autoresearch.jsonl` and `autoresearch.ideas.md` look like scratch files and
   are not: the loop reads both.
 
+### Source-level pass
+
+- Call graph over all four PowerShell files: 15 functions, every one has a call
+  site (`Measure-Tree` 3, `Measure-Many` 2, `Resolve-RaccoonPath` 5,
+  `Get-TreeStats` 2, `Read-Map` 4, `Invoke-Probe` 3, `Invoke-Render` 2,
+  `Fail` 25, `Ok` 9, `Warn` 3, `To-Slash` 6, `Get-ExtHistogram` 2,
+  `Ref-Measure-Many` 2, `Resolve-P` 2, `New-Blob` 46). No dead functions.
+- Dependencies: none. No `Import-Module`, no `#requires`, no `Add-Type`, no
+  package manifest — PowerShell built-ins only. Nothing to prune.
+- Two switches were implemented but undocumented, i.e. unreachable from the
+  skill's own instructions: `raccoon-clean.ps1 -IncludeCaution` and
+  `raccoon-scan.ps1 -NoMeasure`. Both are live code, so they were documented in
+  SKILL.md rather than deleted.
+
 ### Verification (post-cleanup, same session)
 
 `./autoresearch.sh` → `safe_gb=16.53 caution_gb=18.123 forbidden_gb=42.798
