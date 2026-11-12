@@ -1,2 +1,7 @@
 fixtures/tree/
 *.log
+
+# transient run artifacts: scan/clean output dumps. Regenerate, never commit.
+/.scan.json
+/.dryrun.txt
+/.clean*.txt

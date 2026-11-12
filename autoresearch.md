@@ -105,3 +105,66 @@ emptied after verifying every protected path was intact.
 
 Rebuild costs incurred: npm/pnpm/uv caches and PlatformIO packages will
 re-download on next use; Codex runtimes re-download on next run.
+
+## Repo hygiene (2026-11-12)
+
+**What this project produces, in one sentence:** a reusable Windows cache-audit
+skill — `SKILL.md` + a machine-readable map (`tools/cache-map.jsonl`) + a
+read-only measuring engine (`tools/raccoon-scan.ps1`) + a checks gate
+(`tools/raccoon-validate.ps1`) + an executor (`tools/raccoon-clean.ps1`) — that
+measures regenerable cache on any Windows host and reclaims it safely.
+
+Test applied to every file: *delete it — does the project still build, test and
+run?* Yes → gone. No → stays. Value unclear → `archive/`.
+
+### Inventory (18 tracked files → 16 tracked + 2 archived)
+
+| file | role | referenced by | verdict |
+|---|---|---|---|
+| `SKILL.md` | the deliverable: skill entry point | skill loader | keep |
+| `tools/cache-map.jsonl` | data source of truth, 152 entries | scan, clean, validate | keep |
+| `tools/raccoon-scan.ps1` | audit engine (548 L) | `autoresearch.sh`, SKILL.md, validate | keep |
+| `tools/raccoon-validate.ps1` | checks gate (322 L) | `autoresearch.checks.sh`, SKILL.md | keep |
+| `tools/raccoon-clean.ps1` | executor (87 L) | SKILL.md | keep |
+| `references/cache-map.md` | rendered map, sections 6-7 | SKILL.md, `-Render` | keep |
+| `fixtures/forbidden.json` | frozen safety policy | validate | keep (off limits) |
+| `fixtures/manifest.json` | probe ground truth | validate | keep (off limits) |
+| `fixtures/gen-fixture.ps1` | builds the fixture tree | `autoresearch.checks.sh` | keep (off limits) |
+| `fixtures/tree/` | 18 MB / 45 files, generated | checks gate | keep, gitignored, regenerable |
+| `autoresearch.sh` | benchmark harness | pi-autoresearch | keep (off limits) |
+| `autoresearch.checks.sh` | gate harness | pi-autoresearch | keep (off limits) |
+| `autoresearch.md` | rules + experiment log | harness | keep |
+| `autoresearch.jsonl` | experiment log | pi-autoresearch | keep |
+| `autoresearch.ideas.md` | deferred-optimisation backlog | harness | keep |
+| `.gitignore` | ignore rules | git | keep |
+| `.scan.json` | 67 KB scan dump, 2026-11-03 | nothing | **deleted** — regenerable via `-Json` |
+| `.dryrun.txt` | dry-run target list, 2026-11-03 | nothing | **archived** |
+| `.clean1.txt` | clean-run log incl. LOCK lines | nothing | **archived** |
+
+### What was removed and why
+
+- `.scan.json` — output of one `raccoon-scan.ps1 -Json` run. Reproducible on
+  demand; a build artifact sitting in the repo root. Deleted, and the pattern is
+  now in `.gitignore`.
+- `.dryrun.txt`, `.clean1.txt` — the only per-target record of the 30.53 GB
+  destructive run. Not regenerable (the caches are gone), so they went to
+  `archive/2026-11-03-cleanup/` instead of the bin. Recoverable from history
+  either way: `git show 804ff74:.dryrun.txt`.
+- Root-level dotfile dumps are now ignored (`/.scan.json`, `/.dryrun.txt`,
+  `/.clean*.txt`) so the next run cannot re-pollute the root.
+
+### What was deliberately kept
+
+- `references/cache-map.md` is generated, but SKILL.md points at its sections
+  6-7 as the system-level entry list — a shipped artifact, not a dump.
+- `fixtures/tree/` is 18 MB of generated tree, but the checks gate needs it and
+  rebuilds it on demand; it is gitignored, so it costs the repo nothing.
+- `autoresearch.jsonl` and `autoresearch.ideas.md` look like scratch files and
+  are not: the loop reads both.
+
+### Verification (post-cleanup, same session)
+
+`./autoresearch.sh` → `safe_gb=16.53 caution_gb=18.123 forbidden_gb=42.798
+entries=152 present=84 missing=68 scan_seconds=7.98`, exit 0.
+`./autoresearch.checks.sh` → all 8 gates ok, `probe_f1=1`, `CHECKS PASSED`,
+exit 0. Nothing in the repo depended on the three removed files.
