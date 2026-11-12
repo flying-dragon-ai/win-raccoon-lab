@@ -9,79 +9,101 @@ param(
   [switch]$IncludeCaution
 )
 $ErrorActionPreference = 'Continue'
-$script:Here = Split-Path -Parent $PSCommandPath
+[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+
+Import-Module (Join-Path $PSScriptRoot 'Raccoon.Common.psm1') -Force
+
+$script:Here = $PSScriptRoot
 if (-not $MapPath) { $MapPath = Join-Path $script:Here 'cache-map.jsonl' }
 if (-not $TrashRoot) { $TrashRoot = Join-Path $env:USERPROFILE '.raccoon-trash' }
 $stamp = Get-Date -Format 'yyyyMMdd-HHmm'
 
-function Resolve-P { param([string]$Raw)
-  $p = [Environment]::ExpandEnvironmentVariables($Raw).Replace([char]92, [char]47)
-  if ($p.Length -gt 3) { $p = $p.TrimEnd('/') }
-  return $p
+function Get-EntryTargets {
+  # Forward slashes here: the trash layout and the log lines use them.
+  param($Entry)
+  $resolved = Resolve-RaccoonPath -Raw ([string]$Entry.path) -Separator '/'
+  if ($resolved -match '[*?]') {
+    return @(Get-Item -Path $resolved -Force -ErrorAction SilentlyContinue)
+  }
+  $one = Get-Item -LiteralPath $resolved -Force -ErrorAction SilentlyContinue
+  if ($null -eq $one) { return @() }
+  return @($one)
 }
 
-$entries = New-Object 'System.Collections.Generic.List[object]'
-foreach ($line in [System.IO.File]::ReadAllLines($MapPath)) {
-  $t = $line.Trim()
-  if ($t -eq '' -or $t.StartsWith('#')) { continue }
-  $entries.Add(($t | ConvertFrom-Json))
+function Move-IntoTrash {
+  # Whole-directory move first. If a handle is held, fall back to per-child moves
+  # so one locked file does not strand the rest of the cache.
+  param([string]$Source, [string]$Dest, [System.Collections.Generic.List[string]]$Log)
+  $reason = ''
+  try {
+    Move-Item -LiteralPath $Source -Destination $Dest -Force -ErrorAction Stop
+    return [pscustomobject]@{ Ok = $true; Reason = '' }
+  } catch {
+    $reason = $_.Exception.Message
+  }
+
+  $item = Get-Item -LiteralPath $Source -Force -ErrorAction SilentlyContinue
+  if ($null -eq $item -or -not $item.PSIsContainer) {
+    return [pscustomobject]@{ Ok = $false; Reason = $reason }
+  }
+
+  $sub = Join-Path $Dest $item.Name
+  New-Item -ItemType Directory -Path $sub -Force | Out-Null
+  $movedAny = $false
+  foreach ($kid in @(Get-ChildItem -LiteralPath $Source -Force -ErrorAction SilentlyContinue)) {
+    try {
+      Move-Item -LiteralPath $kid.FullName -Destination $sub -Force -ErrorAction Stop
+      $movedAny = $true
+    } catch {
+      $Log.Add(("LOCK {0}  ({1})" -f $kid.FullName, $_.Exception.Message))
+    }
+  }
+  return [pscustomobject]@{ Ok = $movedAny; Reason = $reason }
 }
+
+$entries = Get-CacheMapEntries -Path $MapPath
 
 $wanted = @('safe')
 if ($IncludeCaution) { $wanted += 'caution' }
 
-$moved = 0; $failed = 0; $bytesMoved = [int64]0; $skipped = 0
+$stats = [ordered]@{ moved = 0; failed = 0; skipped = 0; bytes = [int64]0 }
 $log = New-Object 'System.Collections.Generic.List[string]'
 
 foreach ($e in $entries) {
   if ($wanted -notcontains [string]$e.level) { continue }
   if ($Ids -and $Ids.Count -gt 0 -and $Ids -notcontains [string]$e.id) { continue }
-  if ($e.measure -eq $false) { continue }
+  if ($e.measure -eq $false) { continue }   # doc-only entry, nothing on disk
 
-  $resolved = Resolve-P ([string]$e.path)
-  $targets = @()
-  if ($resolved -match '[*?]') {
-    $targets = @(Get-Item -Path $resolved -Force -ErrorAction SilentlyContinue)
-  } else {
-    $one = Get-Item -LiteralPath $resolved -Force -ErrorAction SilentlyContinue
-    if ($null -ne $one) { $targets = @($one) }
-  }
-  if ($targets.Count -eq 0) { $skipped++; continue }
+  $targets = @(Get-EntryTargets -Entry $e)
+  if ($targets.Count -eq 0) { $stats.skipped++; continue }
 
   $dest = Join-Path $TrashRoot ("{0}-{1}" -f $stamp, $e.id)
   if (-not $DryRun) { New-Item -ItemType Directory -Path $dest -Force | Out-Null }
 
   foreach ($t in $targets) {
-    $size = 0
-    if ($t.PSIsContainer) {
-      $size = [int64]0
-      try { $size = (& robocopy $t.FullName 'C:\__raccoon_null__' /L /S /BYTES /XJ /NFL /NDL /NJH /NP /R:0 /W:0 2>$null |
-             ForEach-Object { if ($_ -match ':\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*$') { [int64]$matches[1] } })[2] } catch { }
-    } else { $size = [int64]$t.Length }
+    $size = Get-PathBytes -Path $t.FullName
+    if ($size -lt 0) { $size = [int64]0 }
 
     if ($DryRun) {
-      $log.Add(("DRY  {0,10:N1} MB  {1}" -f ($size/1MB), $t.FullName)); $moved++; $bytesMoved += $size; continue
+      $log.Add(("DRY  {0,10:N1} MB  {1}" -f ($size / 1MB), $t.FullName))
+      $stats.moved++
+      $stats.bytes += $size
+      continue
     }
 
-    $ok = $false
-    try { Move-Item -LiteralPath $t.FullName -Destination $dest -Force -ErrorAction Stop; $ok = $true } catch { }
-
-    if (-not $ok -and $t.PSIsContainer) {
-      # whole-dir move failed (handle held): fall back to per-child moves
-      $sub = Join-Path $dest $t.Name
-      New-Item -ItemType Directory -Path $sub -Force | Out-Null
-      $kids = @(Get-ChildItem -LiteralPath $t.FullName -Force -ErrorAction SilentlyContinue)
-      foreach ($k in $kids) {
-        try { Move-Item -LiteralPath $k.FullName -Destination $sub -Force -ErrorAction Stop; $ok = $true }
-        catch { $log.Add(("LOCK {0}" -f $k.FullName)) }
-      }
+    $r = Move-IntoTrash -Source $t.FullName -Dest $dest -Log $log
+    if ($r.Ok) {
+      $log.Add(("MOV  {0,10:N1} MB  {1}" -f ($size / 1MB), $t.FullName))
+      $stats.moved++
+      $stats.bytes += $size
+    } else {
+      $log.Add(("FAIL {0,10:N1} MB  {1}  ({2})" -f ($size / 1MB), $t.FullName, $r.Reason))
+      $stats.failed++
     }
-
-    if ($ok) { $log.Add(("MOV  {0,10:N1} MB  {1}" -f ($size/1MB), $t.FullName)); $moved++; $bytesMoved += $size }
-    else { $log.Add(("FAIL {0,10:N1} MB  {1}" -f ($size/1MB), $t.FullName)); $failed++ }
   }
 }
 
 $log | ForEach-Object { Write-Host $_ }
 Write-Host ''
-Write-Host ("SUMMARY moved={0} failed={1} skipped={2} bytes={3:N2} GB trash={4}" -f $moved, $failed, $skipped, ($bytesMoved/1GB), $TrashRoot)
+Write-Host ("SUMMARY moved={0} failed={1} skipped={2} bytes={3:N2} GB trash={4}" -f `
+  $stats.moved, $stats.failed, $stats.skipped, ($stats.bytes / 1GB), $TrashRoot)

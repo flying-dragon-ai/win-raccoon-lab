@@ -136,6 +136,10 @@ run?* Yes → gone. No → stays. Value unclear → `archive/`.
 | `autoresearch.md` | rules + experiment log | harness | keep |
 | `autoresearch.jsonl` | experiment log | pi-autoresearch | keep |
 | `autoresearch.ideas.md` | deferred-optimisation backlog | harness | keep |
+| `README.md` | the front door: what it is, quick start, gates | humans | keep |
+| `assets/raccoon.svg` | logo mark | README | keep |
+| `assets/architecture.svg` | pipeline diagram | README | keep |
+| `tools/Raccoon.Common.psm1` | shared primitives (see below) | scan, clean, validate | keep |
 | `.gitignore` | ignore rules | git | keep |
 | `.scan.json` | 67 KB scan dump, 2026-11-03 | nothing | **deleted** — regenerable via `-Json` |
 | `.dryrun.txt` | dry-run target list, 2026-11-03 | nothing | **archived** |
@@ -182,3 +186,90 @@ run?* Yes → gone. No → stays. Value unclear → `archive/`.
 entries=152 present=84 missing=68 scan_seconds=7.98`, exit 0.
 `./autoresearch.checks.sh` → all 8 gates ok, `probe_f1=1`, `CHECKS PASSED`,
 exit 0. Nothing in the repo depended on the three removed files.
+
+## Code quality pass (2026-11-12)
+
+Measured the way Bob Martin measures it: how often does a reader say *what the
+fuck* while walking the code. The offenders were all duplication and magic
+numbers, not logic.
+
+### Duplication removed
+
+| was | copies | now |
+|---|---|---|
+| robocopy measurement (invoke + regex + `$rows[2]`) | 3 — `Measure-Tree`, `Measure-Many`'s worker, inline in `raccoon-clean.ps1` | `Get-RobocopyBytes` / `Get-RobocopyBytesMany` in the module |
+| path resolution (`ExpandEnvironmentVariables` + separator + `TrimEnd`) | 3 — scan, clean, validate | `Resolve-RaccoonPath -Separator` |
+| map loading (read lines, skip comments, `ConvertFrom-Json`) | 3 | `Read-CacheMap` / `Get-CacheMapEntries` |
+| extension walker (stack, reparse-point skip, histogram) | 2 — `Get-TreeStats`, `Get-ExtHistogram` | `Get-ExtHistogram` + `Get-ContentProfile` |
+| runspace pool boilerplate (create, dispatch, `EndInvoke`, dispose) | 2 — `Measure-Many`, `Ref-Measure-Many` | `Invoke-Parallel` |
+| covered-path build + prefix test | 2 — `-Discover`, `-BigFiles` | `Get-CoveredPaths` / `Test-Covered` |
+| discover roots array | 2 | `$script:DiscoverRoots` |
+
+### Structure
+
+- `Invoke-Probe` was 90 lines doing four jobs. Split into `Test-HardForbidden`,
+  `Get-ProbeLevel`, `New-ProbeResult`, with `Invoke-Probe` as a 30-line
+  orchestrator.
+- `Get-TreeStats` returned the same data twice (`ext` string and `extMap`
+  hashtable) and the caller iterated the hashtable twice. Now one
+  `Get-ContentProfile` computes files, summary, user ratio, media ratio and
+  database flag in a single pass.
+- `Invoke-Render`'s static sections 6-7 were 16 `AppendLine` calls; now a line
+  array, and the per-section table is `Add-MapSection`.
+- `$gb = { param($b) ... }` — a scriptblock used as a function — became
+  `ConvertTo-GiB`. The seven `METRIC` lines became one ordered map and a loop.
+- `$paths += $t.FullName` in a loop (O(n²)) became a `List[string]`.
+
+### Magic numbers named
+
+`0.30` / `0.60` / `0.85` / `4000` / `6` / `3` became
+`$MaxUserContentRatio`, `$ForbidUserContentRatio`, `$ForbidMediaRatio`,
+`$ExtSampleLimit`, `$ExtSummaryTop`, and `$RobocopyBytesRow` (with a comment
+explaining that robocopy's summary is dirs/files/bytes). `C:\__raccoon_null__`
+is documented as the never-written `/L` destination. `Length -gt 3` is
+documented as "keep `C:\` intact".
+
+### Bugs fixed on the way
+
+- **`-Json > report.json` wrote GBK.** `[Console]::OutputEncoding` was gb2312, so
+  redirected JSON was not valid UTF-8 — the section names came out as mojibake.
+  Both scripts now set UTF-8 output encoding.
+- **`-OutJson` wrote a BOM** (`Set-Content -Encoding UTF8` on PS 5.1) while
+  `-Render` wrote none. Both now use `UTF8Encoding($false)`.
+- **`raccoon-clean.ps1` swallowed the reason** for every failed move: `catch { }`
+  then a bare `FAIL` line. Failures and locks now carry the exception message.
+- **`raccoon-clean.ps1` could emit `$null` sizes** when robocopy returned fewer
+  than three summary rows (`(...)[2]` on an empty pipeline). Now 0.
+- **validate.ps1 section 4 had a mis-indented block** — the `foreach ($t in
+  $targets)` body sat at the wrong depth, making the loop look like it ended
+  early.
+
+### New gate: 9th check
+
+The scanner ships its own copy of the probe tables so the skill works without
+`fixtures/`. That copy could silently drift more permissive than the frozen
+policy. `raccoon-scan.ps1 -DumpRules` now prints the tables as JSON and gate 9
+asserts every pattern, override, extension list and ratio is a subset of
+`fixtures/forbidden.json`. `fixtures/` itself was not touched.
+
+### Equivalence proof
+
+The refactor was verified against the pre-refactor code, not against intent:
+
+- `-Render` output: **byte-identical** to the pre-refactor render.
+- `-Json`: 152 items, identical `id`/`section`/`path`/`level`/`exists`/`app`/
+  `kind`; 4 `bytes` values differ by <0.01% because `Temp`, the JetBrains log,
+  the WeChat log and the pi session dir were being written during the two runs.
+- `-Probe` on `Temp`, `Documents`, a missing path and `WinSxS`: identical level,
+  files, ext summary and reasons.
+- Gate: 9/9 ok, `probe_f1=1`, `CHECKS PASSED`.
+- Benchmark: `safe_gb=17.463`, `scan_seconds=5.33` (was 7.98 — ambient, not a
+  claim).
+- `raccoon-clean.ps1 -DryRun`: `moved=30 failed=0 skipped=52 bytes=17.46 GB`,
+  matching `safe_gb` exactly.
+
+Line counts: scan 548 → 503, validate 322 → 312, clean 87 → 109 (the extra lines
+are the extracted `Move-IntoTrash` and the failure reasons), plus a 220-line
+module. Total 957 → 1144, but the 220 module lines replace roughly 150 lines of
+copy-paste that were spread across three files, and every one of them now has a
+single place to be wrong.

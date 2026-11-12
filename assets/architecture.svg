@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" width="920" height="430" role="img" aria-label="win-raccoon architecture">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#64748b"/>
+    </marker>
+    <style>
+      .box{fill:#111827;stroke:#334155;stroke-width:1.5;rx:10}
+      .lbl{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;fill:#e2e8f0}
+      .sub{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:#94a3b8}
+      .edge{stroke:#64748b;stroke-width:1.6;fill:none;marker-end:url(#arrow)}
+      .tag{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;fill:#64748b}
+    </style>
+  </defs>
+  <rect width="920" height="430" fill="#0b1220"/>
+
+  <rect class="box" x="24" y="150" width="190" height="76" rx="10"/>
+  <text class="lbl" x="40" y="180">cache-map.jsonl</text>
+  <text class="sub" x="40" y="200">152 entries · source of truth</text>
+  <text class="sub" x="40" y="216">level: safe / caution / forbidden</text>
+
+  <rect class="box" x="290" y="140" width="200" height="96" rx="10" stroke="#22c55e"/>
+  <text class="lbl" x="306" y="170">raccoon-scan.ps1</text>
+  <text class="sub" x="306" y="190">read-only engine</text>
+  <text class="sub" x="306" y="206">robocopy /L · 16 threads</text>
+  <text class="sub" x="306" y="222">probe classifier</text>
+
+  <rect class="box" x="566" y="40" width="180" height="58" rx="10"/>
+  <text class="lbl" x="582" y="66">METRIC lines</text>
+  <text class="sub" x="582" y="84">benchmark output</text>
+
+  <rect class="box" x="566" y="128" width="180" height="58" rx="10"/>
+  <text class="lbl" x="582" y="154">-Json report</text>
+  <text class="sub" x="582" y="172">machine readable</text>
+
+  <rect class="box" x="566" y="216" width="180" height="58" rx="10"/>
+  <text class="lbl" x="582" y="242">cache-map.md</text>
+  <text class="sub" x="582" y="260">rendered for humans</text>
+
+  <rect class="box" x="290" y="300" width="200" height="76" rx="10" stroke="#f59e0b"/>
+  <text class="lbl" x="306" y="330">raccoon-validate.ps1</text>
+  <text class="sub" x="306" y="350">9 gates · policy · F1</text>
+  <text class="sub" x="306" y="366">independent re-measure</text>
+
+  <rect class="box" x="566" y="300" width="180" height="76" rx="10" stroke="#ef4444"/>
+  <text class="lbl" x="582" y="330">raccoon-clean.ps1</text>
+  <text class="sub" x="582" y="350">moves, never deletes</text>
+  <text class="sub" x="582" y="366">.raccoon-trash/</text>
+
+  <path class="edge" d="M214 188 H286"/>
+  <path class="edge" d="M490 168 H520 V69 H562"/>
+  <path class="edge" d="M490 188 H562"/>
+  <path class="edge" d="M490 208 H520 V245 H562"/>
+  <path class="edge" d="M390 236 V296"/>
+  <path class="edge" d="M490 338 H562"/>
+  <path class="edge" d="M390 300 V262 H286 V226" stroke-dasharray="4 4"/>
+
+  <text class="tag" x="222" y="182">reads</text>
+  <text class="tag" x="500" y="160">emits</text>
+  <text class="tag" x="398" y="272">gates</text>
+  <text class="tag" x="500" y="332">executes</text>
+  <text class="tag" x="24" y="404">read-only by construction: the engine has no destructive cmdlet, and gate 7 greps its source to prove it</text>
+</svg>

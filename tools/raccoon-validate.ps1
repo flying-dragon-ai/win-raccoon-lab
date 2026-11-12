@@ -1,8 +1,13 @@
 ﻿# raccoon-validate.ps1 - checks gate for the win-raccoon autoresearch loop.
-# ASCII only. Exit 1 on any FAIL.
+# Exit 1 on any FAIL.
 [CmdletBinding()]
 param([string]$Root)
 $ErrorActionPreference = 'Stop'
+# The scanner emits UTF-8; decode its output the same way.
+[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+
+Import-Module (Join-Path $PSScriptRoot 'Raccoon.Common.psm1') -Force
+
 if (-not $Root) { $Root = Split-Path -Parent $PSScriptRoot }
 
 $script:Fail = 0
@@ -21,25 +26,24 @@ $pol = Get-Content -Raw -LiteralPath $polPath | ConvertFrom-Json
 
 function To-Slash {
   param([string]$p)
-  $x = [Environment]::ExpandEnvironmentVariables($p).Replace([char]92, [char]47)
-  if ($x.Length -gt 3) { $x = $x.TrimEnd('/') }
-  return $x
+  return (Resolve-RaccoonPath -Raw $p -Separator '/')
 }
 
 # ---------------------------------------------------------------- 1. schema
-$entries = New-Object 'System.Collections.Generic.List[object]'
-$n = 0
-foreach ($line in [System.IO.File]::ReadAllLines($mapPath)) {
-  $n++
-  $t = $line.Trim()
-  if ($t -eq '' -or $t.StartsWith('#')) { continue }
-  try { $o = $t | ConvertFrom-Json } catch { Fail "map line ${n}: invalid JSON"; continue }
+$map = Read-CacheMap -Path $mapPath
+foreach ($err in $map.Errors) { Fail $err }
+$entries = $map.Entries
+foreach ($e in $entries) {
+  $n = $e._line
   foreach ($f in 'id','section','path','level','app','kind','desc') {
-    $v = $o.PSObject.Properties[$f]
-    if ($null -eq $v -or [string]::IsNullOrWhiteSpace([string]$v.Value)) { Fail "map line ${n}: missing field '$f'" }
+    $v = $e.PSObject.Properties[$f]
+    if ($null -eq $v -or [string]::IsNullOrWhiteSpace([string]$v.Value)) {
+      Fail "map line ${n}: missing field '$f'"
+    }
   }
-  if (@('safe','caution','forbidden') -notcontains [string]$o.level) { Fail "map line ${n}: bad level '$($o.level)'" }
-  $entries.Add($o)
+  if (@('safe','caution','forbidden') -notcontains [string]$e.level) {
+    Fail "map line ${n}: bad level '$($e.level)'"
+  }
 }
 if ($script:Fail -eq 0) { Ok "schema: $($entries.Count) entries" }
 
@@ -66,7 +70,8 @@ foreach ($lv in $byLevel.Keys) {
   $list = $byLevel[$lv]
   for ($i = 0; $i -lt $list.Count; $i++) {
     for ($j = $i + 1; $j -lt $list.Count; $j++) {
-      $a = $list[$i]; $b = $list[$j]
+      $a = $list[$i]
+      $b = $list[$j]
       if ($a.p -eq $b.p) { continue }
       if ($a.p.StartsWith($b.p + '/') -or $b.p.StartsWith($a.p + '/')) {
         Fail "same-level nesting double counts ($lv): $($a.id) [$($a.p)] vs $($b.id) [$($b.p)]"
@@ -79,65 +84,38 @@ if ($nestFail -eq 0) { Ok 'no same-level nesting (no double counting)' }
 
 # ---------------------------------------------------------------- 3. safe-entry policy
 $allowedRoots = @($pol.allowed_roots) | ForEach-Object { (To-Slash $_).ToLowerInvariant() }
+$minEvidence = 6
+if ($null -ne $pol.min_evidence_chars) { $minEvidence = [int]$pol.min_evidence_chars }
 
 $policyFail = 0
 foreach ($e in $entries) {
+  if ([string]$e.level -ne 'safe') { continue }
   $p = To-Slash ([string]$e.path)
   $full = $p.ToLowerInvariant() + '/'
 
-  if ([string]$e.level -eq 'safe') {
-    $rootOk = $false
-    foreach ($r in $allowedRoots) { if ($full.StartsWith($r + '/') -or $full -eq ($r + '/')) { $rootOk = $true; break } }
-    if (-not $rootOk) { Fail "$($e.id): safe path outside allowed roots: $p"; $policyFail++ }
+  $rootOk = $false
+  foreach ($r in $allowedRoots) {
+    if ($full.StartsWith($r + '/') -or $full -eq ($r + '/')) { $rootOk = $true; break }
+  }
+  if (-not $rootOk) { Fail "$($e.id): safe path outside allowed roots: $p"; $policyFail++ }
 
-    if ($e.regenerable -ne $true) { Fail "$($e.id): safe entry must set regenerable=true"; $policyFail++ }
-    if ([string]::IsNullOrWhiteSpace([string]$e.source)) { Fail "$($e.id): safe entry needs a source"; $policyFail++ }
-    $minEv = 6
-    if ($null -ne $pol.min_evidence_chars) { $minEv = [int]$pol.min_evidence_chars }
-    if (([string]$e.evidence).Length -lt $minEv) { Fail "$($e.id): safe entry needs evidence >= $minEv chars"; $policyFail++ }
+  if ($e.regenerable -ne $true) { Fail "$($e.id): safe entry must set regenerable=true"; $policyFail++ }
+  if ([string]::IsNullOrWhiteSpace([string]$e.source)) { Fail "$($e.id): safe entry needs a source"; $policyFail++ }
+  if (([string]$e.evidence).Length -lt $minEvidence) {
+    Fail "$($e.id): safe entry needs evidence >= $minEvidence chars"; $policyFail++
+  }
 
-    $overridden = $false
-    foreach ($rx in $pol.overrides) { if ($full -match $rx) { $overridden = $true; break } }
-    if (-not $overridden) {
-      foreach ($rx in $pol.patterns) {
-        if ($full -match $rx) { Fail "$($e.id): safe entry matches forbidden pattern '$rx'"; $policyFail++; break }
-      }
+  $overridden = $false
+  foreach ($rx in $pol.overrides) { if ($full -match $rx) { $overridden = $true; break } }
+  if (-not $overridden) {
+    foreach ($rx in $pol.patterns) {
+      if ($full -match $rx) { Fail "$($e.id): safe entry matches forbidden pattern '$rx'"; $policyFail++; break }
     }
   }
 }
 if ($policyFail -eq 0) { Ok 'safe-entry policy: roots, regenerable, source, evidence, forbidden patterns' }
 
 # ---------------------------------------------------------------- 4. user-content ratio on safe entries
-function Get-ExtHistogram {
-  param([string]$Path, [int]$Limit = 4000)
-  $count = 0
-  $hist = @{}
-  $stack = New-Object 'System.Collections.Generic.Stack[string]'
-  $stack.Push($Path)
-  while ($stack.Count -gt 0 -and $count -lt $Limit) {
-    $d = $stack.Pop()
-    $di = $null
-    try { $di = [System.IO.DirectoryInfo]::new($d) } catch { continue }
-    try {
-      foreach ($f in $di.EnumerateFiles()) {
-        $count++
-        $x = $f.Extension.ToLowerInvariant()
-        if ($x -eq '') { $x = '(none)' }
-        if ($hist.ContainsKey($x)) { $hist[$x]++ } else { $hist[$x] = 1 }
-        if ($count -ge $Limit) { break }
-      }
-    } catch { }
-    if ($count -ge $Limit) { break }
-    try {
-      foreach ($s in $di.EnumerateDirectories()) {
-        if ($s.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue }
-        $stack.Push($s.FullName)
-      }
-    } catch { }
-  }
-  return [pscustomobject]@{ files = $count; hist = $hist }
-}
-
 $ratioFail = 0
 $checked = 0
 foreach ($e in $entries) {
@@ -150,103 +128,84 @@ foreach ($e in $entries) {
     $one = Get-Item -LiteralPath $p -Force -ErrorAction SilentlyContinue
     if ($null -ne $one) { $targets = @($one) }
   }
+
   foreach ($t in $targets) {
-  if (-not $t.PSIsContainer) { continue }
-  $h = Get-ExtHistogram $t.FullName
-  if ($h.files -eq 0) { continue }
-  $checked++
-  $user = 0
-  $media = 0
-  foreach ($k in $h.hist.Keys) {
-    if ($pol.user_content_ext -contains $k) { $user += $h.hist[$k] }
-    if ($pol.media_ext -contains $k) { $media += $h.hist[$k] }
-  }
-  $ratio = [double]$user / [double]$h.files
-  $mratio = [double]$media / [double]$h.files
-  if ($ratio -gt [double]$pol.max_user_content_ratio) {
-    Fail ("{0}: user-content ratio {1:P0} > {2:P0} ({3} of {4} files)" -f $e.id, $ratio, [double]$pol.max_user_content_ratio, $user, $h.files)
-    $ratioFail++
-  }
-  if ($mratio -gt [double]$pol.max_media_ratio) {
-    Fail ("{0}: media ratio {1:P0} > {2:P0} ({3} of {4} files)" -f $e.id, $mratio, [double]$pol.max_media_ratio, $media, $h.files)
-    $ratioFail++
-  }
+    if (-not $t.PSIsContainer) { continue }
+    $h = Get-ExtHistogram -Path $t.FullName
+    if ($h.Files -eq 0) { continue }
+    $checked++
+
+    $user = 0
+    $media = 0
+    foreach ($k in $h.Hist.Keys) {
+      if ($pol.user_content_ext -contains $k) { $user += $h.Hist[$k] }
+      if ($pol.media_ext -contains $k) { $media += $h.Hist[$k] }
+    }
+    $ratio = [double]$user / [double]$h.Files
+    $mratio = [double]$media / [double]$h.Files
+
+    if ($ratio -gt [double]$pol.max_user_content_ratio) {
+      Fail ("{0}: user-content ratio {1:P0} > {2:P0} ({3} of {4} files)" -f `
+        $e.id, $ratio, [double]$pol.max_user_content_ratio, $user, $h.Files)
+      $ratioFail++
+    }
+    if ($mratio -gt [double]$pol.max_media_ratio) {
+      Fail ("{0}: media ratio {1:P0} > {2:P0} ({3} of {4} files)" -f `
+        $e.id, $mratio, [double]$pol.max_media_ratio, $media, $h.Files)
+      $ratioFail++
+    }
   }
 }
 if ($ratioFail -eq 0) { Ok "user-content ratio: $checked safe entries under threshold" }
 
 # ---------------------------------------------------------------- 5. independent re-measure
-function Ref-Measure-Many {
-  param([string[]]$Paths, [int]$BudgetSec = 60, [int]$Throttle = 4)
-  $res = @{}
-  if ($null -eq $Paths -or $Paths.Count -eq 0) { return $res }
-
-  $worker = {
-    param($root, $budget)
-    $sw = [System.Diagnostics.Stopwatch]::StartNew()
-    $sum = [int64]0
-    $stack = New-Object 'System.Collections.Generic.Stack[string]'
-    $stack.Push($root)
-    while ($stack.Count -gt 0) {
-      if ($sw.Elapsed.TotalSeconds -gt $budget) { return [int64]-1 }
-      $d = $stack.Pop()
-      $di = $null
-      try { $di = [System.IO.DirectoryInfo]::new($d) } catch { continue }
-      try { foreach ($f in $di.EnumerateFiles()) { $sum += $f.Length } } catch { }
-      try {
-        foreach ($s in $di.EnumerateDirectories()) {
-          if ($s.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue }
-          $stack.Push($s.FullName)
-        }
-      } catch { }
-    }
-    return $sum
-  }
-
-  $n = [Math]::Min($Throttle, $Paths.Count)
-  $pool = [runspacefactory]::CreateRunspacePool(1, $n)
-  $pool.Open()
-  $jobs = New-Object 'System.Collections.Generic.List[object]'
-  foreach ($p in $Paths) {
-    $ps = [powershell]::Create()
-    $ps.RunspacePool = $pool
-    [void]$ps.AddScript($worker).AddArgument($p).AddArgument($BudgetSec)
-    $jobs.Add([pscustomobject]@{ Path = $p; PS = $ps; Handle = $ps.BeginInvoke() })
-  }
-  foreach ($j in $jobs) {
-    $v = [int64]-1
+# Deliberately a different algorithm from the scanner: a plain directory walk
+# that sums FileInfo.Length, instead of robocopy's own accounting.
+$refWorker = {
+  param($root, $budget)
+  $sw = [System.Diagnostics.Stopwatch]::StartNew()
+  $sum = [int64]0
+  $stack = New-Object 'System.Collections.Generic.Stack[string]'
+  $stack.Push($root)
+  while ($stack.Count -gt 0) {
+    if ($sw.Elapsed.TotalSeconds -gt $budget) { return [int64]-1 }
+    $d = $stack.Pop()
+    $di = $null
+    try { $di = [System.IO.DirectoryInfo]::new($d) } catch { continue }
+    try { foreach ($f in $di.EnumerateFiles()) { $sum += $f.Length } } catch { }
     try {
-      $r = $j.PS.EndInvoke($j.Handle)
-      if ($null -ne $r -and $r.Count -gt 0) { $v = [int64]$r[0] }
-    } catch { $v = -1 }
-    $res[$j.Path] = $v
-    $j.PS.Dispose()
+      foreach ($s in $di.EnumerateDirectories()) {
+        if ($s.Attributes -band [System.IO.FileAttributes]::ReparsePoint) { continue }
+        $stack.Push($s.FullName)
+      }
+    } catch { }
   }
-  $pool.Close()
-  $pool.Dispose()
-  return $res
+  return $sum
 }
 
 $scanJson = & powershell -NoProfile -ExecutionPolicy Bypass -File $scanPath -Json 2>$null | Out-String
-try { $scan = $scanJson | ConvertFrom-Json } catch { Fail 'scanner -Json output unparseable'; $scan = $null }
+$scan = $null
+try { $scan = $scanJson | ConvertFrom-Json } catch { Fail 'scanner -Json output unparseable' }
 
 if ($null -ne $scan) {
   $topSafe = $scan.items | Where-Object { $_.level -eq 'safe' -and $_.exists -and $_.bytes -gt 0 } |
              Sort-Object bytes -Descending | Select-Object -First 4
+  $refPaths = @($topSafe | ForEach-Object { $_.path })
+  $refSizes = Invoke-Parallel -Items $refPaths -Worker $refWorker -WorkerArgs @(90) -Throttle 4
+
   $refFail = 0
   $refDone = 0
-  $refPaths = @($topSafe | ForEach-Object { $_.path })
-  $refSizes = Ref-Measure-Many -Paths $refPaths -BudgetSec 90 -Throttle 4
   foreach ($it in $topSafe) {
     $ref = [int64]-1
     if ($refSizes.ContainsKey($it.path)) { $ref = [int64]$refSizes[$it.path] }
     if ($ref -lt 0) { Warn "ref-measure budget exceeded: $($it.path)"; continue }
     $refDone++
-    $tol = [double]$pol.ref_measure_tolerance
+
     $diff = 0.0
     if ($ref -gt 0) { $diff = [math]::Abs([double]$it.bytes - [double]$ref) / [double]$ref }
-    if ($diff -gt $tol) {
-      Fail ("{0}: scanner reports {1} bytes, independent measure {2} (diff {3:P1})" -f $it.id, $it.bytes, $ref, $diff)
+    if ($diff -gt [double]$pol.ref_measure_tolerance) {
+      Fail ("{0}: scanner reports {1} bytes, independent measure {2} (diff {3:P1})" -f `
+        $it.id, $it.bytes, $ref, $diff)
       $refFail++
     }
   }
@@ -297,6 +256,7 @@ foreach ($c in $manifest.cases) {
   elseif (-not $expSafe -and $gotSafe) { $fp++; $misses += "FP $($c.rel) -> $($g.level)" }
   elseif ($expSafe -and -not $gotSafe) { $fn++; $misses += "FN $($c.rel) -> $($g.level)" }
   else { $tn++ }
+
   if ($expSafe -and $gotSafe -and $c.bytes -gt 0) {
     $d = [math]::Abs([double]$g.bytes - [double]$c.bytes) / [double]$c.bytes
     if ($d -gt 0.02) { Fail ("fixture size: {0} expected {1} got {2}" -f $c.rel, $c.bytes, $g.bytes) }
@@ -312,6 +272,36 @@ if ($f1 -lt [double]$pol.min_fixture_f1) {
   Ok ("fixture F1 {0} (tp={1} fp={2} fn={3} tn={4})" -f $f1, $tp, $fp, $fn, $tn)
 }
 Write-Host ("METRIC probe_f1={0}" -f $f1)
+
+# ---------------------------------------------------------------- 8. probe tables vs frozen policy
+# The scanner ships its own copy of the probe tables so the skill works without
+# fixtures/. That copy must never be more permissive than the frozen policy.
+$rulesJson = & powershell -NoProfile -ExecutionPolicy Bypass -File $scanPath -DumpRules 2>$null | Out-String
+$rules = $null
+try { $rules = $rulesJson | ConvertFrom-Json } catch { Fail 'scanner -DumpRules output unparseable' }
+
+if ($null -ne $rules) {
+  $drift = 0
+  foreach ($rx in @($rules.hard_forbidden)) {
+    if (@($pol.patterns) -notcontains $rx) { Fail "scanner hard-forbidden pattern not in policy: $rx"; $drift++ }
+  }
+  foreach ($rx in @($rules.overrides)) {
+    if (@($pol.overrides) -notcontains $rx) { Fail "scanner override not in policy: $rx"; $drift++ }
+  }
+  foreach ($x in @($rules.user_content_ext)) {
+    if (@($pol.user_content_ext) -notcontains $x) { Fail "scanner user_content_ext not in policy: $x"; $drift++ }
+  }
+  foreach ($x in @($rules.media_ext)) {
+    if (@($pol.media_ext) -notcontains $x) { Fail "scanner media_ext not in policy: $x"; $drift++ }
+  }
+  if ([double]$rules.max_user_content_ratio -ne [double]$pol.max_user_content_ratio) {
+    Fail "scanner max_user_content_ratio $($rules.max_user_content_ratio) != policy $($pol.max_user_content_ratio)"; $drift++
+  }
+  if ([double]$rules.forbid_media_ratio -ne [double]$pol.max_media_ratio) {
+    Fail "scanner forbid_media_ratio $($rules.forbid_media_ratio) != policy $($pol.max_media_ratio)"; $drift++
+  }
+  if ($drift -eq 0) { Ok 'scanner probe tables agree with the frozen policy' }
+}
 
 # ---------------------------------------------------------------- verdict
 if ($script:Fail -gt 0) {
