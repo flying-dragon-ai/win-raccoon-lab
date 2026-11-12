@@ -41,7 +41,7 @@ C 盘满了，你打开资源管理器，看到 `AppData` 里几十个不认识�
 ## ⚡ 30 秒上手
 
 ```powershell
-git clone https://github.com/<you>/win-raccoon-lab.git
+git clone https://github.com/flying-dragon-ai/win-raccoon-lab.git
 cd win-raccoon-lab
 
 # 1. 体检：只读，不动任何文件
@@ -236,15 +236,18 @@ win-raccoon-lab/
 <sub>浣熊洗东西，是因为它知道什么该吃。你删文件之前，先跑体检。</sub>
 </div>
 
-<!--
-发布到 GitHub 后，把下面两块的注释去掉，并把 <owner> 换成你的账号。
-它们需要 owner/repo 才能取数，本地没有 remote 时会是坏图。
+## ⭐ Star History
 
 <div align="center">
-<img src="https://api.star-history.com/svg?repos=<owner>/win-raccoon-lab&type=Date" alt="star history"/>
+<a href="https://star-history.com/#flying-dragon-ai/win-raccoon-lab&Date">
+<img src="https://api.star-history.com/svg?repos=flying-dragon-ai/win-raccoon-lab&type=Date" alt="star history" width="640"/>
+</a>
 </div>
 
-<a href="https://github.com/<owner>/win-raccoon-lab/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=<owner>/win-raccoon-lab" alt="contributors"/>
+## 👥 Contributors
+
+<div align="center">
+<a href="https://github.com/flying-dragon-ai/win-raccoon-lab/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=flying-dragon-ai/win-raccoon-lab" alt="contributors"/>
 </a>
--->
+</div>
